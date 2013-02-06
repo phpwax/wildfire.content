@@ -1,5 +1,5 @@
 <?
-CMSApplication::register_module("media", array("display_name"=>"Content", "link"=>"/admin/content/", 'split'=>true));
+CMSApplication::register_module("content", array("display_name"=>"Content", "link"=>"/admin/content/", 'split'=>true));
 
 AutoLoader::register_view_path("plugin", __DIR__."/view/");
 AutoLoader::register_controller_path("plugin", __DIR__."/lib/controller/");
