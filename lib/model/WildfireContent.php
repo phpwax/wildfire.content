@@ -8,18 +8,18 @@ class WildfireContent extends WaxTreeModel {
 
   public function setup(){
 
-    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1) );
-    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput"));
+    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content') );
+    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content'));
 
 
-    $this->define("date_start", "DateTimeField", array('export'=>true, 'default'=>"now", 'output_format'=>"j F Y H:i",'input_format'=> 'j F Y H:i', 'info_preview'=>1));
-    $this->define("date_end", "DateTimeField", array('export'=>true, 'default'=>date("Y-m-d",mktime(0,0,0, date("m"), date("j"), date("y")-10 )), 'output_format'=>"j F Y H:i", 'input_format'=> 'j F Y H:i','info_preview'=>1));
+    $this->define("date_start", "DateTimeField", array('export'=>true, 'default'=>"now", 'output_format'=>"j F Y H:i",'input_format'=> 'j F Y H:i', 'info_preview'=>1, 'group'=>'dates'));
+    $this->define("date_end", "DateTimeField", array('export'=>true, 'default'=>date("Y-m-d",mktime(0,0,0, date("m"), date("j"), date("y")-10 )), 'output_format'=>"j F Y H:i", 'input_format'=> 'j F Y H:i','info_preview'=>1,'group'=>'dates'));
 
 
     $langs = array();
     foreach(CMSApplication::$languages as $i=>$l) $langs[$i] = $l['name'];
     $default = array_shift(array_keys(CMSApplication::$languages));
-    $this->define("language", "IntegerField", array('export'=>true, 'choices'=>$langs, 'default'=>$default, 'group'=>'all versions', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
+    $this->define("language", "IntegerField", array('export'=>true, 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
 
     //main grouping field
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
@@ -29,21 +29,20 @@ class WildfireContent extends WaxTreeModel {
     $this->define("meta_keywords", "TextField", array('group'=>'others', 'editable'=>false));
 
     //hidden extras
-    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput", 'group'=>'parent'));
+    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput", 'group'=>'sort'));
     $this->define("date_modified", "DateTimeField", array('export'=>true, 'scaffold'=>true, "editable"=>false));
     $this->define("date_created", "DateTimeField", array('export'=>true, "editable"=>false));
 
     $this->define("revision", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput", 'editable'=>false));
     $this->define("alt_language", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput"));
 
-    $this->define("view", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_views(),'group'=>'advanced'));
-    $this->define("layout", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_layouts(),'group'=>'advanced'));
+    $this->define("layout", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_layouts(),'group'=>'design'));
 
     $this->define("status", "IntegerField", array('default'=>0, 'maxlength'=>2, "widget"=>"SelectInput", "choices"=>array(0=>"Not Live",1=>"Live"), 'scaffold'=>true, 'editable'=>false, 'label'=>"Live", 'info_preview'=>1, "tree_scaffold"=>1));
 
     $this->define("old_id", "IntegerField", array('editable'=>false));
 
-    $this->define("page_type", "CharField", array('group'=>'advanced', 'widget'=>'SelectInput', 'choices'=>self::page_types() ));
+    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types() ));
     parent::setup();
 
   }
