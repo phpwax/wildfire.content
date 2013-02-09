@@ -5,4 +5,7 @@ if($model->status == 1) $endpoint = "/".trim($controller,"/")."/edit/".$model->p
 else $endpoint = "/".trim($controller,"/")."/edit/".$model->primval.".json";
 ?>
 
-<?if($autosave):?><a id="auto-save" title="Autosave Enabled" class="button orange enabled"><img src="/images/wildfire/icons/autosave-on.png" alt="Autosave Enabled" data-saving="/images/wildfire/icons/autosaving.gif" data-off="/images/wildfire/icons/autosave-off.png"><span data-save-point="<?=$endpoint?>" data-controller="/<?=trim($controller,"/")?>/">Auto Save Enabled</span></a><?endif?>
+<fieldset class='submit'>
+  <?=partial("_submit", array('model'=>$model, 'controller'=>$controller, 'model_class'=>$model_class, 'autosave'=>$autosave))?>
+</fieldset>
+

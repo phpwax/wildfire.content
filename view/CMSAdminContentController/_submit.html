@@ -1,4 +1,10 @@
 <div class='form-submit'>
+  <?if($autosave):?>
+    <a id="auto-save" title="Autosave Enabled" class="button orange enabled">
+      <span data-save-point="<?=$endpoint?>" data-controller="/<?=trim($controller,"/")?>/">Auto Save Enabled</span>
+    </a>
+  <?endif?>
+
   <?if($autosave):?><a href="<?=$model->permalink?>?preview=<?=$model->primval?>" class='preview button preview-button'>Preview</a><?endif?>
     
   <?if($model->status == 1):?>
