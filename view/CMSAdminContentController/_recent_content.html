@@ -1,0 +1,16 @@
+<?if($content && $content->count()):?>
+<div class='row'>
+  <h2><?if($live):?>Recently Published Content<?else:?>Recent Draft Content<?endif?></h2>
+  <div class='listing'>
+    <table>
+    <?foreach($content as $page):?>
+    <tr>
+      <td><a href="/admin/content/edit/<?=$page->primval?>/"><?=$page->title?></a></td>
+      <td><em>in:</em>&nbsp;&nbsp;<?if(($parent = $page->parent)):?><?=$parent->title?><?endif?></td>
+      <td><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
+    </tr>
+    <?endforeach?>
+    </table>
+  </div>
+</div>
+<?endif?>
