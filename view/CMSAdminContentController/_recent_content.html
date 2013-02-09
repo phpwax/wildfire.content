@@ -3,7 +3,7 @@ $cachelink = Config::get('cacheissue');
 ?>
 <?if($content && $content->count()):?>
 <div class='row'>
-  <h2><?if($live):?>Recently Published Content<?else:?>Recent Draft Content<?endif?></h2>
+  <h2><?if($live):?>Recently <strong>Published</strong> Content<?else:?>Recent <strong>Draft</strong> Content<?endif?></h2>
   <div class='listing'>
     <table>
     <?foreach($content as $page):?>
