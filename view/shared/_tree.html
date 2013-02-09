@@ -1,5 +1,10 @@
 <?if($tree_model instanceof WaxTreeModel):?>
-  <?$permissions = $current_user->permissions($operation_actions, $module_name)?>
+  <?
+    $permissions = $current_user->permissions($operation_actions, $module_name);
+    $tree_class = get_class($tree_model);
+    $ancestry = new $tree_class(Request::param("treeid"));
+    foreach($ancestry->path_to_root as $ancestor) $ancestor_ids[] = $ancestor->id;
+  ?>
   <div class='index_container tree_item_details hover_update' data-hover-selector=".tree_node, .row">
     <h3 class='clearfix'>
       <a class="operation hover_el" href="/<?=trim($controller,"/")?>/create/" data-hover-fetch-href="data-add-child-url">Add Child</a>
@@ -10,6 +15,6 @@
   </div>
   <div class='index_container tree_list'>
     <h3><?=$mods[$module_name]['display_name']?> Tree</h3>
-    <?=partial("_tree_nodes", array("tree_model"=>$tree_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true))?>
+    <?=partial("_tree_nodes", array("tree_model"=>$tree_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids))?>
   </div>
 <?endif?>
