@@ -1,4 +1,5 @@
 <?
+  $tree_class = get_class($tree_model);
   if(!$ignore_cols) $ignore_cols = array();
   if(!$permissions) $permissions = $current_user->permissions($operation_actions, $module_name);
   $tree_model = $tree_model->scope($tree_scope);
@@ -6,9 +7,9 @@
   else if($load_whole_tree) $nodes = $tree_model->tree();
   else if($scoped) $nodes = $tree_model->scope($scoped)->all();
   else{
-    if(($tc = get_class($tree_model)) && ($pid = $current_user->restricted_tree($tc))){
+    if($pid = $current_user->restricted_tree($tree_class)){
       if(!$pid[1]) $pid[1] = "id";
-      $cc = new $tc($tree_scope);
+      $cc = new $tree_class($tree_scope);
       if($pid[0]){
         $ids = explode(",", $pid[0]);
         $nodes = $cc->filter($pid[1], $ids)->all();
@@ -44,7 +45,7 @@
         <?endif?>
       <?endforeach?>
       <?if(!$ignore_children && $node->has_children($tree_scope) ):?>
-        <a class="ui-icon ui-icon-circle-triangle-e view_children_link <?=$load_whole_tree?'':'ajax_tree_load'?> " href="#"></a>
+        <a class="ui-icon ui-icon-circle-triangle-e view_children_link <?=$load_whole_tree?'':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>">open tree</a>
       <?else:?>
         <span class="ui-icon ui-icon-empty"></span>
       <?endif?>
@@ -52,6 +53,13 @@
       <span class="ui-icon ui-icon-document"></span>
       <?=truncate(ucwords(strtolower($node->{$node->identifier})),50)?>
       <?if($permissions['edit']):?></a><?endif?>
+      <?if(in_array($node->id, $ancestor_ids)):?>
+        <?
+          $children_model = new $tree_class;
+          $children_model->filter("parent_id", $node->id);
+        ?>
+        <?=partial("_tree_nodes", array("tree_model"=>$children_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids, "model_filters"=>array("parent"=>$node->id)))?>
+      <?endif?>
     </li>
   <?endforeach?>
 </ul>
