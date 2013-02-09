@@ -261,5 +261,22 @@ class CMSAdminContentController extends AdminComponent {
 
 
 
+  public function _recent_content(){
+    $model = new $this->model_class;
+    if($this->live) $model->scope("live");
+    else $model->filter("status", 0);
+    $permissions = $this->current_user->permissions($this->operation_actions, $this->module_name);
+    if( ($pid = $this->current_user->restricted_tree($this->model_class) ) ){
+      if(!$pid[1]) $pid[1] = "parent_id";
+      if($pid[0]){
+        $ids = explode(",", $pid[0]);
+        $model->filter($pid[1], $ids);
+      }
+    }
+
+    $this->content = $model->order("date_modified DESC")->limit(5)->all();
+  }
+
+
 }
 ?>
