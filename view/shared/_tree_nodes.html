@@ -21,18 +21,9 @@
 
 ?>
 <ul class='data_tree' <?=$load_whole_tree?'':"data-action='/".trim($controller,"/")."/_tree'"?> >
-  <?if($show_headers):?>
-    <li class="tree_headers"><?=Inflections::humanize($tree_model->identifier)?></li>
-  <?endif?>
+
   <?foreach($nodes as $node):?>
-    <li class="tree_node tree_depth_<?=$node->get_level();?> clearfix<?=$primval == $node->primval?' active':''?>" data-row-language="<?=$node->language?>" data-row-id="<?=$node->primval?>" data-sort-url="/<?=trim($controller,"/")?>/sort/<?=$node->parent_id?>" data-add-child-url="/<?=trim($controller,"/")?>/create/?<?=$node->table?>[parent_id]=<?=$node->revision?$node->find_master()->primval:$node->primval?>"
-      <?foreach($node->columns as $col_name => $col):?>
-        <?if($col[1]['info_preview'] && !in_array($col_name, $ignore_cols)):?>
-          <?$value = ((method_exists($node, "humanize"))?$node->humanize($col_name):$node->$col_name());?>
-          data-<?=$col_name?>="<?=$value?>"
-        <?endif?>
-      <?endforeach?>
-    >
+    <li class="tree_node tree_depth_<?=$node->get_level();?> clearfix<?=$primval == $node->primval?' active':''?>" data-row-language="<?=$node->language?>" data-row-id="<?=$node->primval?>">
       <?if(!$children_operations || ($children_operations && $node->has_children($tree_scope) )):?>
       <span class="tree_operations">
         <?=partial("_operations", array("permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink))?>

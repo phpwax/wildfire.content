@@ -23,6 +23,11 @@ class CMSAdminContentController extends AdminComponent {
                         );
   public $autosave = true;
   public static $restricted_tree = true;
+  public $operation_actions = array(
+                                                  'edit'=>array('action'=>'edit', 'name'=>'<b>✎</b>Edit %s'),
+                                                  'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child')
+                                                );
+
 
   protected function events(){
     parent::events();
@@ -278,6 +283,9 @@ class CMSAdminContentController extends AdminComponent {
     $this->content = $model->order("date_modified DESC")->limit(5)->all();
   }
 
+  public function child(){
+    $this->redirect_to("/".$this->controller."/create/?wildfire_content[parent_id]=".Request::param("id"));
+  }
 
 }
 ?>
