@@ -8,9 +8,9 @@ $cachelink = Config::get('cacheissue');
     <table>
     <?foreach($content as $page):?>
     <tr>
-      <td><a href="/admin/content/edit/<?=$page->primval?>/"><?=$page->title?></a></td>
-      <td><em>in:</em>&nbsp;&nbsp;<?if(($parent = $page->parent)):?><?=$parent->title?><?endif?></td>
-      <td><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
+      <td class='title'><a href="/admin/content/edit/<?=$page->primval?>/"><?=$page->title?></a></td>
+      <td  class='in'><em>in:</em>&nbsp;&nbsp;<?if(($parent = $page->parent)):?><?=$parent->title?><?endif?></td>
+      <td class='on'><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
       <td class='operations'>
         <?=partial("_operations", array("current_user"=>$current_user,"permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$page, "cachelink"=>$cachelink))?>
       </td>
