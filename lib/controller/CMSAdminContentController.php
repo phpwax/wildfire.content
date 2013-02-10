@@ -6,6 +6,7 @@
 class CMSAdminContentController extends AdminComponent {
   public $tree_layout = true;
   public $module_name = "content";
+  public $singular = "Content";
   public $model_class = 'WildfireContent';
   public $model_scope = 'admin';
   public $export_scope = "live";
