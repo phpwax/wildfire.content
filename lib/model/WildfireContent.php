@@ -29,7 +29,7 @@ class WildfireContent extends WaxTreeModel {
     $this->define("meta_keywords", "TextField", array('group'=>'others', 'editable'=>false));
 
     //hidden extras
-    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput", 'group'=>'sort'));
+    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
     $this->define("date_modified", "DateTimeField", array('export'=>true, 'scaffold'=>true, "editable"=>false));
     $this->define("date_created", "DateTimeField", array('export'=>true, "editable"=>false));
 
