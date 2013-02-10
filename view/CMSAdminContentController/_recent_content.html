@@ -2,7 +2,7 @@
 $cachelink = Config::get('cacheissue');
 ?>
 <?if($content && $content->count()):?>
-<div class='row'>
+<div class='row indented'>
   <h2><?if($live):?>Recently <strong>Published</strong> Content<?else:?>Recent <strong>Draft</strong> Content<?endif?></h2>
   <div class='listing'>
     <table>
