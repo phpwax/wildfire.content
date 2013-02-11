@@ -42,7 +42,9 @@
       <?endif?>
       <?if($permissions['edit']):?><a href="/<?=trim($controller,"/")?>/edit/<?=$node->primval?>/<?=(($cachelink)?"?rl=".rand():"")?>" class='<?=$col_name?>_link'><?endif?>
       <?=truncate(ucwords(strtolower($node->{$node->identifier})),50)?>
+
       <?if($permissions['edit']):?></a><?endif?>
+      <?=$node->dates();?>
       <?if(in_array($node->id, $ancestor_ids)):?>
         <?
           $children_model = new $tree_class;
