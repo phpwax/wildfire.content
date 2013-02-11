@@ -36,7 +36,7 @@
         <?endif?>
       <?endforeach?>
       <?if(!$ignore_children && $node->has_children($tree_scope) ):?>
-        <a class="ui-icon ui-icon-circle-triangle-e view_children_link <?=$load_whole_tree?'':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>">open tree</a>
+        <a class="view_children_link <?=$load_whole_tree?'':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>"><b>↳</b></a>
       <?else:?>
         <span class="ui-icon ui-icon-empty"></span>
       <?endif?>
