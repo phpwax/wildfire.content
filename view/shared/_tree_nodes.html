@@ -40,10 +40,10 @@
       <?else:?>
         <span class="empty"></span>
       <?endif?>
-      <?if($permissions['edit']):?><a href="/<?=trim($controller,"/")?>/edit/<?=$node->primval?>/<?=(($cachelink)?"?rl=".rand():"")?>" class='<?=$col_name?>_link'><?endif?>
+      <?if($permissions['edit']):?><a href="/<?=trim($controller,"/")?>/edit/<?=$node->primval?>/<?=(($cachelink)?"?rl=".rand():"")?>" class='<?=$col_name?>_link'><?else:?><span class='<?=$col_name?>_link'><?endif?>
       <?=truncate(ucwords(strtolower($node->{$node->identifier})),50)?>
 
-      <?if($permissions['edit']):?></a><?endif?>
+      <?if($permissions['edit']):?></a><?else:?></span><?endif?>
       <?=$node->dates();?>
       <?if(in_array($node->id, $ancestor_ids)):?>
         <?
