@@ -47,6 +47,16 @@ class WildfireContent extends WaxTreeModel {
 
   }
 
+
+  public function dates(){
+    if($this->live()){
+      return "<em class='date'>Start: ".date("jS M Y", strtotime($this->date_start))."<br>End: ".date("jS M Y", strtotime($this->date_end))."</em>";
+    }else{
+      return "<em class='date'>Last saved: ".date("jS M Y", strtotime($this->date_modified))."<br>Start: ".date("jS M Y", strtotime($this->date_end))."</em>";
+    }
+
+  }
+
   public function page_type_data(){
     $page_type = false;
     $set_by = $p = $this;
