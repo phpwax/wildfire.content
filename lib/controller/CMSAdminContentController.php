@@ -118,8 +118,8 @@ class CMSAdminContentController extends AdminComponent {
     WaxEvent::add("cms.model.filters", function(){
       $obj = WaxEvent::data();
       if(!isset($obj->model_filters['language']) && $obj->model && $obj->model->columns['language']){
-        $obj->model_filters['language'] = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
-        $obj->model->filter("language",  $obj->model_filters['language']);
+        $default_language = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
+        $obj->model->filter("language", $default_language);
       }
     });
 

@@ -4,9 +4,10 @@
     $tree_class = get_class($tree_model);
     $ancestry = new $tree_class(Request::param("treeid"));
     foreach($ancestry->path_to_root as $ancestor) $ancestor_ids[] = $ancestor->id;
+    $tree_without_filters = new $tree_class;
   ?>
 
   <div class='index_container tree_list'>
-    <?=partial("_tree_nodes", array("scaffold_columns"=>$scaffold_columns, "tree_model"=>$tree_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids))?>
+    <?=partial("_tree_nodes", array("scaffold_columns"=>$scaffold_columns, "tree_model"=>$tree_without_filters, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids))?>
   </div>
 <?endif?>
