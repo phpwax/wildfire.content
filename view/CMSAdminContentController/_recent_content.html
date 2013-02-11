@@ -1,5 +1,6 @@
 <?
 $cachelink = Config::get('cacheissue');
+if(!$live) unset($permissions['child']);
 ?>
 <?if($content && $content->count()):?>
 <div class='row indented'>
@@ -12,7 +13,7 @@ $cachelink = Config::get('cacheissue');
       <td  class='in'><em>in:</em>&nbsp;&nbsp;<?if(($parent = $page->parent)):?><?=$parent->title?><?endif?></td>
       <td class='on'><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
       <td class='operations'>
-        <?=partial("_operations", array("current_user"=>$current_user,"permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$page, "cachelink"=>$cachelink))?>
+        <?=partial("_operations", array('singular'=>"Content", "current_user"=>$current_user,"permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$page, "cachelink"=>$cachelink, 'operation_actions'=>$operation_actions ))?>
       </td>
     </tr>
     <?endforeach?>
