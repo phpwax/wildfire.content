@@ -19,7 +19,7 @@ class WildfireContent extends WaxTreeModel {
     $langs = array();
     foreach(CMSApplication::$languages as $i=>$l) $langs[$i] = $l['name'];
     $default = array_shift(array_keys(CMSApplication::$languages));
-    $this->define("language", "IntegerField", array('export'=>true, 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
+    $this->define("language", "IntegerField", array('export'=>true, 'widget'=>"SelectInput", 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
 
     //main grouping field
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
