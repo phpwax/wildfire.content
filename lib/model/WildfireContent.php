@@ -3,7 +3,6 @@
 class WildfireContent extends WaxTreeModel {
   public $identifier = "title";
   public static $view_listing_cache = array();
-  public static $layout_listing_cache = array();
 
 
   public function setup(){
@@ -35,8 +34,6 @@ class WildfireContent extends WaxTreeModel {
 
     $this->define("revision", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput", 'editable'=>false));
     $this->define("alt_language", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput"));
-
-    $this->define("layout", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_layouts(),'group'=>'design'));
 
     $this->define("status", "IntegerField", array('default'=>0, 'maxlength'=>2, "widget"=>"SelectInput", "choices"=>array(0=>"Not Live",1=>"Live"), 'scaffold'=>true, 'editable'=>false, 'label'=>"Live", 'info_preview'=>1, "tree_scaffold"=>1));
 
@@ -275,20 +272,6 @@ class WildfireContent extends WaxTreeModel {
     }
     asort($return);
     WildfireContent::$view_listing_cache = $return;
-    return $return;
-  }
-
-  public function cms_layouts(){
-    if(count(WildfireContent::$layout_listing_cache)) return WildfireContent::$layout_listing_cache;
-    $dir = VIEW_DIR."layouts/";
-    $return = array(''=>'-- Select Layout --');
-    if(is_dir($dir) && ($files = glob($dir."*.html"))){
-      foreach($files as $f){
-        $i = str_replace($dir, "", $f);
-        $return[$i] = str_replace("_", " ", basename($f, ".html"));
-      }
-    }
-    WildfireContent::$layout_listing_cache = $return;
     return $return;
   }
 
