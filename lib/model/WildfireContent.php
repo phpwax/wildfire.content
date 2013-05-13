@@ -18,14 +18,14 @@ class WildfireContent extends WaxTreeModel {
     $langs = array();
     foreach(CMSApplication::$languages as $i=>$l) $langs[$i] = $l['name'];
     $default = array_shift(array_keys(CMSApplication::$languages));
-    $this->define("language", "IntegerField", array('export'=>true, 'widget'=>"SelectInput", 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
+    $this->define("language", "IntegerField", array('export'=>true, 'widget'=>"SelectInput", 'choices'=>$langs, 'default'=>$default, 'group'=>'extras', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
 
     //main grouping field
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
 
-    $this->define("excerpt", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_description", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_keywords", "TextField", array('group'=>'others', 'editable'=>false));
+    $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
+    $this->define("meta_description", "TextField", array('group'=>'extras', 'editable'=>false));
+    $this->define("meta_keywords", "TextField", array('group'=>'extras', 'editable'=>false));
 
     //hidden extras
     $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
