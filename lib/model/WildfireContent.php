@@ -7,8 +7,8 @@ class WildfireContent extends WaxTreeModel {
 
   public function setup(){
 
-    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content') );
-    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content'));
+    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content', 'primary_group'=>1) );
+    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content', 'primary_group'=>1));
 
 
     $this->define("date_start", "DateTimeField", array('export'=>true, 'default'=>"now", 'output_format'=>"j F Y H:i",'input_format'=> 'j F Y H:i', 'info_preview'=>1, 'group'=>'dates'));
@@ -39,7 +39,7 @@ class WildfireContent extends WaxTreeModel {
 
     $this->define("old_id", "IntegerField", array('editable'=>false));
 
-    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types() ));
+    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types(), 'primary_group'=>1));
     parent::setup();
 
   }
