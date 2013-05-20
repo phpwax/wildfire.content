@@ -32,7 +32,7 @@ class WildfireContent extends WaxTreeModel {
     $this->define("date_modified", "DateTimeField", array('export'=>true, 'scaffold'=>true, "editable"=>false));
     $this->define("date_created", "DateTimeField", array('export'=>true, "editable"=>false));
 
-    $this->define("revision", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput", 'editable'=>false));
+    $this->define("revision", "IntegerField", array("group"=>"revision", "default"=>0, 'widget'=>"HiddenInput", 'editable'=>true));
     $this->define("alt_language", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput"));
 
     $this->define("status", "IntegerField", array('default'=>0, 'maxlength'=>2, "widget"=>"SelectInput", "choices"=>array(0=>"Not Live",1=>"Live"), 'scaffold'=>true, 'editable'=>false, 'label'=>"Live", 'info_preview'=>1, "tree_scaffold"=>1));
