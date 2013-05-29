@@ -146,7 +146,7 @@ class CMSAdminContentController extends AdminComponent {
       $obj->redirect_to("/".trim($obj->controller,"/")."/edit/".$destination_model->primval."/");
     });
 
-    WaxEvent::add("cms.edit.init", function(){
+    WaxEvent::add("cms.save.after", function(){
       $controller = WaxEvent::data();
       $model = $controller->model;
 
