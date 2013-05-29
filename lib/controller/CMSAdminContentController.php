@@ -284,7 +284,8 @@ class CMSAdminContentController extends AdminComponent {
   }
 
   public function child(){
-    $this->redirect_to("/".$this->controller."/create/?wildfire_content[parent_id]=".Request::param("id"));
+    $model = new $this->model_class;
+    $this->redirect_to("/".$this->controller."/create/?".$model->table."[parent_id]=".Request::param("id"));
   }
 
 }
