@@ -45,7 +45,20 @@
       <?=truncate(ucwords(strtolower($node->{$node->identifier})),50)?>
 
       <?if($permissions['edit']):?></a><?else:?></span><?endif?>
-      <?=$node->dates();?>
+      <?if($node->columns['date_start'] && $node->columns['date_end']):?>
+        <?$end = strtotime($node->date_end);
+          $start = strtotime($node->date_start);
+          $mod = strtotime($node->date_modified);?>
+        <em class='date'>
+          <?if($node->live()):?>
+            Start: <?=date("jS M Y", $start)?>
+            <?if($start < $end):?><br>End: <?=date("jS M Y", $end)?><?endif?>
+          <?else:?>
+            Last saved: <?=date("jS M Y", $mod)?>
+            <br>Start: <?=date("jS M Y", $start)?>
+          <?endif?>
+        </em>
+      <?endif?>
     </li>
     <?if($node_open):?>
       <?
