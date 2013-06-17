@@ -33,6 +33,10 @@ class CMSAdminContentController extends AdminComponent {
 
   protected function events(){
     parent::events();
+    WaxEvent::add("cms.duplicate.unsets", function(){
+      $columns = WaxEvent::data();
+      unset($columns['revision'], $columns['status'], $columns['parent'], $columns['navigation_items'], $columns['id']);
+    });
 
     WaxEvent::add("cms.url.delete", function(){
       if(($id = Request::param('map_remove')) && ($check = new WildfireUrlMap($id)) && $check->primval){
