@@ -290,20 +290,6 @@ class CMSAdminContentController extends AdminComponent {
     $this->redirect_to("/".$this->controller."/create/?".$model->table."[parent_id]=".Request::param("id"));
   }
 
-  public function duplicate(){
-    $class = $this->model_class;
-    $model = new $class(Request::param("id"));
-    $new_version = new $class;
-    $columns = $model->columns;
-    unset($columns['id'], $columns['revision'], $columns['status']);
-    foreach($columns as $col=>$setup) {
-      $field = $model->get_col($col);
-      if(!$field->is_association) $new_version->$col = $model->$col;
-      else $associations[]=$col;
-    }
-
-
-  }
 
 }
 ?>
