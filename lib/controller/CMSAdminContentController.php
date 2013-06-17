@@ -294,6 +294,21 @@ class CMSAdminContentController extends AdminComponent {
     $this->redirect_to("/".$this->controller."/create/?".$model->table."[parent_id]=".Request::param("id"));
   }
 
+  public function status_toggle(){
+    $this->use_view = "edit";
+    $class = $this->model_class;
+    $model = new $class(Request::param("id"));
+    if($model->columns['status']){
+      if($model->status){
+        $model->status = 0;
+        $model->generate_permalink()->map_hide()->hide()->save();
+      }else{
+        $model->status = 1;
+        $model->generate_permalink()->map_live()->children_move()->show()->save();
+      }
+    }else throw new Exception("No status to change");
+  }
+
 
 }
 ?>
