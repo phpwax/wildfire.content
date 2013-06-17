@@ -3,14 +3,14 @@ class WildfireUrlMap extends WaxModel{
   public $identifier = "origin_url";
 
   public function setup(){
-    $this->define("title", "CharField", array('scaffold'=>true));
+    $this->define("title", "CharField", array('scaffold'=>true,'group'=>'content','primary_group'=>1));
     $this->define("content", "CharField", array('editable'=>false));
 
-    $this->define("origin_url", "CharField",array('scaffold'=>true));
+    $this->define("origin_url", "CharField",array('scaffold'=>true,'group'=>'content','primary_group'=>1));
     //optional end points
-    $this->define("destination_url", "CharField",array('scaffold'=>true));
-    $this->define("hash", "CharField",array('scaffold'=>true));
-    $this->define("track_url", "IntegerField", array('editable'=>false));
+    $this->define("destination_url", "CharField",array('scaffold'=>true,'group'=>'content','primary_group'=>1));
+    $this->define("hash", "CharField",array('editable'=>false,'scaffold'=>true));
+    $this->define("track_url", "IntegerField", array('editable'=>false,'group'=>'content','primary_group'=>1));
     //or pick the model & id
     $this->define("destination_model", "CharField", array('editable'=>false));
     $this->define("destination_id", "CharField", array('editable'=>false));
@@ -18,8 +18,8 @@ class WildfireUrlMap extends WaxModel{
     $this->define("language", "IntegerField", array("maxlength"=>3, 'default'=>0, 'editable'=>false));
     //allo for custom header status codes
     $this->define("header_status", "IntegerField", array('default'=>302, 'maxlength'=>5, 'widget'=>'SelectInput', 'choices'=>array('302'=>'Temp', '301'=>'Perm')));
-    $this->define("utm_campaign", "CharField");
-    $this->define("utm_medium", "CharField");
+    $this->define("utm_campaign", "CharField",array('group'=>'content','primary_group'=>1));
+    $this->define("utm_medium", "CharField",array('group'=>'content','primary_group'=>1));
 
     //start / end dates /status - these are copied over from destination model
     $this->define("status", "IntegerField", array("maxlength"=>3, 'widget'=>"SelectInput", 'choices'=>array("Draft/Revision", "Live"), 'scaffold'=>true) );

@@ -120,8 +120,8 @@ class CMSAdminContentController extends AdminComponent {
     WaxEvent::add("cms.model.filters", function(){
       $obj = WaxEvent::data();
       if(!isset($obj->model_filters['language']) && $obj->model && $obj->model->columns['language']){
-        $obj->model_filters['language'] = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
-        $obj->model->filter("language",  $obj->model_filters['language']);
+        $default_language = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
+        $obj->model->filter("language", $default_language);
       }
     });
 
@@ -148,7 +148,7 @@ class CMSAdminContentController extends AdminComponent {
       $obj->redirect_to("/".trim($obj->controller,"/")."/edit/".$destination_model->primval."/");
     });
 
-    WaxEvent::add("cms.edit.init", function(){
+    WaxEvent::add("cms.save.after", function(){
       $controller = WaxEvent::data();
       $model = $controller->model;
 
@@ -286,7 +286,8 @@ class CMSAdminContentController extends AdminComponent {
   }
 
   public function child(){
-    $this->redirect_to("/".$this->controller."/create/?wildfire_content[parent_id]=".Request::param("id"));
+    $model = new $this->model_class;
+    $this->redirect_to("/".$this->controller."/create/?".$model->table."[parent_id]=".Request::param("id"));
   }
 
   public function duplicate(){

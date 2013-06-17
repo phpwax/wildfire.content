@@ -3,13 +3,12 @@
 class WildfireContent extends WaxTreeModel {
   public $identifier = "title";
   public static $view_listing_cache = array();
-  public static $layout_listing_cache = array();
 
 
   public function setup(){
 
-    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content') );
-    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content'));
+    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content', 'primary_group'=>1) );
+    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content', 'primary_group'=>1));
 
 
     $this->define("date_start", "DateTimeField", array('export'=>true, 'default'=>"now", 'output_format'=>"j F Y H:i",'input_format'=> 'j F Y H:i', 'info_preview'=>1, 'group'=>'dates'));
@@ -19,41 +18,29 @@ class WildfireContent extends WaxTreeModel {
     $langs = array();
     foreach(CMSApplication::$languages as $i=>$l) $langs[$i] = $l['name'];
     $default = array_shift(array_keys(CMSApplication::$languages));
-    $this->define("language", "IntegerField", array('export'=>true, 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
+    $this->define("language", "IntegerField", array('export'=>true, 'widget'=>"SelectInput", 'choices'=>$langs, 'default'=>$default, 'group'=>'extras', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
 
     //main grouping field
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
 
-    $this->define("excerpt", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_description", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_keywords", "TextField", array('group'=>'others', 'editable'=>false));
+    $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
+    $this->define("meta_description", "TextField", array('group'=>'extras', 'editable'=>false));
+    $this->define("meta_keywords", "TextField", array('group'=>'extras', 'editable'=>false));
 
     //hidden extras
     $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
     $this->define("date_modified", "DateTimeField", array('export'=>true, 'scaffold'=>true, "editable"=>false));
     $this->define("date_created", "DateTimeField", array('export'=>true, "editable"=>false));
 
-    $this->define("revision", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput", 'editable'=>false));
+    $this->define("revision", "IntegerField", array("group"=>"revision", "default"=>0, 'widget'=>"HiddenInput", 'editable'=>true));
     $this->define("alt_language", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput"));
-
-    $this->define("layout", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_layouts(),'group'=>'design'));
 
     $this->define("status", "IntegerField", array('default'=>0, 'maxlength'=>2, "widget"=>"SelectInput", "choices"=>array(0=>"Not Live",1=>"Live"), 'scaffold'=>true, 'editable'=>false, 'label'=>"Live", 'info_preview'=>1, "tree_scaffold"=>1));
 
     $this->define("old_id", "IntegerField", array('editable'=>false));
 
-    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types() ));
+    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types(), 'primary_group'=>1));
     parent::setup();
-
-  }
-
-
-  public function dates(){
-    if($this->live()){
-      return "<em class='date'>Start: ".date("jS M Y", strtotime($this->date_start))."<br>End: ".date("jS M Y", strtotime($this->date_end))."</em>";
-    }else{
-      return "<em class='date'>Last saved: ".date("jS M Y", strtotime($this->date_modified))."<br>Start: ".date("jS M Y", strtotime($this->date_end))."</em>";
-    }
 
   }
 
@@ -275,20 +262,6 @@ class WildfireContent extends WaxTreeModel {
     }
     asort($return);
     WildfireContent::$view_listing_cache = $return;
-    return $return;
-  }
-
-  public function cms_layouts(){
-    if(count(WildfireContent::$layout_listing_cache)) return WildfireContent::$layout_listing_cache;
-    $dir = VIEW_DIR."layouts/";
-    $return = array(''=>'-- Select Layout --');
-    if(is_dir($dir) && ($files = glob($dir."*.html"))){
-      foreach($files as $f){
-        $i = str_replace($dir, "", $f);
-        $return[$i] = str_replace("_", " ", basename($f, ".html"));
-      }
-    }
-    WildfireContent::$layout_listing_cache = $return;
     return $return;
   }
 
