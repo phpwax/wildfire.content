@@ -17,7 +17,7 @@ class CMSAdminContentController extends AdminComponent {
   public $limit_revisions = 20; //limit revisions as it may cause problems
   public $filter_fields=array(
                           'text' => array('columns'=>array('title'), 'partial'=>'_filters_text', 'fuzzy'=>true),
-                          'parent' => array('columns'=>array('parent_id'), 'partial'=>'_filters_parent'),
+                          'parent' => array('columns'=>array('parent_id'), 'partial'=>false),
                           'author' => array('columns'=>array('wildfire_user_id'), 'partial'=>"_filters_author"),
                           'date_start' => array('columns'=>array('date_start', 'date_modified'), 'partial'=>"_filters_date", 'fuzzy_right'=>true),
                           'language' => array('columns'=>array('language'), 'partial'=>"_filters_language")
@@ -26,7 +26,8 @@ class CMSAdminContentController extends AdminComponent {
   public static $restricted_tree = true;
   public $operation_actions = array(
                                                   'edit'=>array('action'=>'edit', 'name'=>'<b>✎</b>Edit %s'),
-                                                  'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child')
+                                                  'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child'),
+                                                  'copy'=>array('action'=>'duplicate', 'name'=>'Copy'),
                                                 );
 
 
@@ -286,6 +287,21 @@ class CMSAdminContentController extends AdminComponent {
 
   public function child(){
     $this->redirect_to("/".$this->controller."/create/?wildfire_content[parent_id]=".Request::param("id"));
+  }
+
+  public function duplicate(){
+    $class = $this->model_class;
+    $model = new $class(Request::param("id"));
+    $new_version = new $class;
+    $columns = $model->columns;
+    unset($columns['id'], $columns['revision'], $columns['status']);
+    foreach($columns as $col=>$setup) {
+      $field = $model->get_col($col);
+      if(!$field->is_association) $new_version->$col = $model->$col;
+      else $associations[]=$col;
+    }
+
+
   }
 
 }
