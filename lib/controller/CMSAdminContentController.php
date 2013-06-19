@@ -12,7 +12,8 @@ class CMSAdminContentController extends AdminComponent {
   public $model_search_scope = 'live';
   public $export_scope = "live";
   public $display_name = "Content";
-  public $sortable = false;
+  public $sortable = true;
+  public $sort_scope = "live";
   public $per_page = 5; //lower per page since there's a tree underneath
   public $limit_revisions = 20; //limit revisions as it may cause problems
   public $filter_fields=array(
