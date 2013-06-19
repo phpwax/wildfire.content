@@ -133,6 +133,10 @@ class CMSAdminContentController extends AdminComponent {
       $controller = WaxEvent::data();
       $controller->tree_model->filter('revision',0);
     });
+    WaxEvent::add("cms.tree.setup.children", function(){
+      $controller = WaxEvent::data();
+      $controller->tree_model->filter('revision',0);
+    });
 
     WaxEvent::clear("cms.model.copy");
     WaxEvent::add("cms.model.copy", function(){

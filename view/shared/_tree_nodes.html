@@ -1,4 +1,5 @@
 <?
+
   $tree_class = get_class($tree_model);
   if(!$ignore_cols) $ignore_cols = array();
   if(!$permissions) $permissions = $current_user->permissions($operation_actions, $module_name);
@@ -62,11 +63,12 @@
     </li>
     <?if($node_open):?>
       <?
-        $children_model = new $tree_class;
-        $children_model->filter("parent_id", $node->id);
+
+        $children_model = new $tree_class($tree_scope);
+        $children_model->filter("parent_id", $node->id)->order($tree_model->_order, $tree_model->_order_params);
       ?>
       <li class="children-of-<?=$node->id?>">
-        <?=partial("_tree_nodes", array("tree_model"=>$children_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids, "model_filters"=>array("parent"=>$node->id)))?>
+        <?=partial("_tree_nodes", array("run_setup"=>true,"tree_model"=>$children_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids, "model_filters"=>array("parent"=>$node->id)))?>
       </li>
     <?endif?>
   <?endforeach?>

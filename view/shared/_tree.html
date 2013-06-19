@@ -7,6 +7,6 @@
   ?>
 
   <div class='index_container tree_list'>
-    <?=partial("_tree_nodes", array("scaffold_columns"=>$scaffold_columns, "tree_model"=>$tree_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids))?>
+    <?=partial("_tree_nodes", array("scaffold_columns"=>$scaffold_columns, "tree_model"=>$tree_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids, 'tree_scope'=>$tree_scope))?>
   </div>
 <?endif?>
