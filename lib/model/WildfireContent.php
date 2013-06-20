@@ -24,8 +24,7 @@ class WildfireContent extends WaxTreeModel {
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
 
     $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
-    $this->define("meta_description", "TextField", array('group'=>'extras', 'editable'=>false));
-    $this->define("meta_keywords", "TextField", array('group'=>'extras', 'editable'=>false));
+
 
     //hidden extras
     $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
@@ -41,6 +40,9 @@ class WildfireContent extends WaxTreeModel {
 
     $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types(), 'primary_group'=>1));
     parent::setup();
+    $this->define("meta_title", "CharField", array('group'=>'meta data', 'editable'=>true));
+    $this->define("meta_description", "TextField", array('group'=>'meta data', 'editable'=>true));
+    $this->define("meta_keywords", "TextField", array('group'=>'meta data', 'editable'=>true));
 
   }
 
