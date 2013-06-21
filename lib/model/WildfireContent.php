@@ -78,12 +78,12 @@ class WildfireContent extends WaxTreeModel {
 
   public function scope_admin(){
     WaxEvent::run(get_class($this).".scope.admin", $this);
-    return $this->order("sort ASC, date_modified DESC");
+    return $this->order($this->table.".sort ASC, ".$this->table.".date_modified DESC");
   }
 
   public function scope_live(){
     WaxEvent::run(get_class($this).".scope.live", $this);
-    return $this->filter("status", 1)->filter("TIMESTAMPDIFF(SECOND, `date_start`, NOW()) >= 0")->filter("(`date_end` <= `date_start` OR (`date_end` >= `date_start` AND `date_end` >= NOW()) )")->order("sort ASC, date_start DESC");
+    return $this->filter("status", 1)->filter("TIMESTAMPDIFF(SECOND, ".$this->table.".`date_start`, NOW()) >= 0")->filter("(".$this->table.".`date_end` <= ".$this->table.".`date_start` OR (".$this->table.".`date_end` >= ".$this->table.".`date_start` AND ".$this->table.".`date_end` >= NOW()) )")->order($this->table.".sort ASC, ".$this->table.".date_start DESC");
   }
   public function scope_preview(){
     WaxEvent::run(get_class($this).".scope.preview", $this);
@@ -91,7 +91,7 @@ class WildfireContent extends WaxTreeModel {
   }
   public function scope_multipleselect(){
     WaxEvent::run(get_class($this).".scope.multipleselect", $this);
-    return $this->scope_live()->filter("id", $this->primval, "!=")->order("date_modified DESC");
+    return $this->scope_live()->filter("id", $this->primval, "!=")->order($this->table.".date_modified DESC");
   }
 
   public function before_save(){
