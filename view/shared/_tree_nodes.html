@@ -37,8 +37,8 @@
           <span class="tree_col tree_col_<?=$col_name?> <?=Inflections::to_url($value)?>"><?=$value?></span>
         <?endif?>
       <?endforeach?>
-      <?if(!$ignore_children && $node->has_children($tree_scope) ):?>
-        <a class="view_children_link <?=($load_whole_tree || $node_open)?'open':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>"><b>↳</b></a>
+      <?if(!$ignore_children && ($node->row['has_children'] > 0 || $node->has_children($tree_scope)) ):?>
+        <a class="view_children_link <?=($load_whole_tree || $node_open)?'open':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>" data-c="<?=$node->row['has_children']?>"><b>↳</b></a>
       <?else:?>
         <span class="empty"></span>
       <?endif?>
