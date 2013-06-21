@@ -21,7 +21,7 @@ class CMSAdminContentController extends AdminComponent {
                           'parent' => array('columns'=>array('parent_id'), 'partial'=>false),
                           'author' => array('columns'=>array('wildfire_user_id'), 'partial'=>"_filters_author"),
                           'date_start' => array('columns'=>array('date_start', 'date_modified'), 'partial'=>"_filters_date", 'fuzzy_right'=>true),
-                          'language' => array('columns'=>array('language'), 'partial'=>"_filters_language")
+                          'language' => array('columns'=>array('language'), 'partial'=>"_filters_hidden")
                         );
   public $autosave = true;
   public static $restricted_tree = true;
