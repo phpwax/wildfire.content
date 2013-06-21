@@ -51,7 +51,7 @@
           $start = strtotime($node->date_start);
           $mod = strtotime($node->date_modified);?>
         <em class='date'>
-          <?if($node->live()):?>
+          <?if($node->status):?>
             Start: <?=date("jS M Y", $start)?>
             <?if($start < $end):?><br>End: <?=date("jS M Y", $end)?><?endif?>
           <?else:?>
