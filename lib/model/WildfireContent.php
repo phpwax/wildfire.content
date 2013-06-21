@@ -195,6 +195,17 @@ class WildfireContent extends WaxTreeModel {
   }
 
 
+  public function enable_has_child_query(){
+    $this->left_join("wildfire_content` as `sub_content");
+    $this->join_condition("sub_content.parent_id = wildfire_content.id");
+    $this->select_columns = "
+      $this->table.*,
+      SUM(sub_content.id) as 'has_children'
+    ";
+    return $this;
+  }
+
+
   public function revision(){
     return $this->revision;
   }
