@@ -196,16 +196,10 @@ class WildfireContent extends WaxTreeModel {
 
 
   public function enable_has_child_query(){
-    $join = "sub_content.parent_id = wildfire_content.id";
-    if($this->filters['language']) $join .= " and sub_content.language = ".$this->filters['language']['value'];
-    if($this->filters['revision']) $join .= " and sub_content.revision = ".$this->filters['revision']['value'];
 
-    $this->left_join("wildfire_content` as `sub_content");
-    $this->join_condition($join);
-    $this->group($this->table.".id");
     $this->select_columns = "
       $this->table.*,
-      SUM(sub_content.id) as 'has_children'
+      (SELECT count(id) FROM wildfire_content as sub_content where `sub_content`.parent_id = wildfire_content.id) as 'has_children'
     ";
     return $this;
   }
