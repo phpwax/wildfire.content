@@ -199,7 +199,7 @@ class WildfireContent extends WaxTreeModel {
 
     $this->select_columns = "
       $this->table.*,
-      (SELECT count(id) FROM wildfire_content as sub_content where `sub_content`.parent_id = wildfire_content.id) as 'has_children'
+      (SELECT count(id) FROM `$this->table` as sub_content where `sub_content`.parent_id = `$this->table`.id) as 'has_children'
     ";
     return $this;
   }
