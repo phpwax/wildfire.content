@@ -78,7 +78,7 @@ class WildfireContent extends WaxTreeModel {
 
   public function scope_admin(){
     WaxEvent::run(get_class($this).".scope.admin", $this);
-    return $this->order($this->table.".sort ASC, ".$this->table.".date_modified DESC");
+    return $this;
   }
 
   public function scope_live(){
