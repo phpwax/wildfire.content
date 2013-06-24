@@ -24,7 +24,10 @@
 <ul class='data_tree' <?=$load_whole_tree?'':"data-action='/".trim($controller,"/")."/_tree'"?> >
 
   <?foreach($nodes as $node):?>
-    <?$node_open = in_array($node->id, $ancestor_ids)?>
+    <?
+    $has_kids = $node_open = false;
+    $node_open = in_array($node->primval, $ancestor_ids);
+    ?>
     <li class="tree_node tree_depth_<?=$node->get_level();?> clearfix<?=$primval == $node->primval?' active':''?><?=$node_open?' open':''?>" data-row-language="<?=$node->language?>" data-row-id="<?=$node->primval?>">
       <?if(!$children_operations || ($children_operations && $node->has_children($tree_scope) )):?>
       <span class="tree_operations">
@@ -37,7 +40,8 @@
           <span class="tree_col tree_col_<?=$col_name?> <?=Inflections::to_url($value)?>"><?=$value?></span>
         <?endif?>
       <?endforeach?>
-      <?if(!$ignore_children && ($node->row['has_children'] > 0 || $node->has_children($tree_scope)) ):?>
+      <?if(!$ignore_children && ($node->row['has_children'] > 0) ):?>
+        <?$has_kids = true;?>
         <a class="view_children_link <?=($load_whole_tree || $node_open)?'open':'ajax_tree_load'?> " href="?treeid=<?=$node->id?>" data-c="<?=$node->row['has_children']?>"><b>↳</b></a>
       <?else:?>
         <span class="empty"></span>
@@ -61,7 +65,7 @@
         </em>
       <?endif?>
     </li>
-    <?if($node_open):?>
+    <?if($node_open && $has_kids):?>
       <?
 
         $children_model = new $tree_class($tree_scope);
