@@ -1,5 +1,14 @@
 <div class='design_changer_container clearfix'>
-  <div class="design-header"><h3>Pick a design and preview</h3></div>
+  <div class="design-header clearfix">
+    <div class='responsive_switcher'>
+      <?$r=0;?>
+    <?foreach(Config::get("cms-responsive") as $name=>$item):?>
+      <a href="#" data-name="<?=$name?>" data-w="<?=$item['w']?>" data-h="<?=$item['h']?>" class='responsive-setting <?if($r==0):?>active-responsive<?endif?>'><img src="<?=$item['img']?>" alt=""></a>
+      <?$r++;?>
+    <?endforeach?>
+    </div>
+    <h3>Pick a design and preview</h3>
+  </div>
   <div class='selection_strip clearfix'>
   <?foreach($fields as $n=>$f):?>
   <?$nm = Inflections::to_url($n)?>
