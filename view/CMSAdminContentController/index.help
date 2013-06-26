@@ -15,9 +15,9 @@ $data =array(
       'elements'=>array(
         array(
           'selector'=> '.tree_node:eq(0)',
-          'copy'=>'This is a content item. You can see the title and some basic information about the content and change its status.',
+          'copy'=>'This is a content item. You can see the title and some basic information about the content, change its status and some basic operations.',
           'fallback_copy'=>'Normally you have a set of buttons listing things you can do',
-          'position'=>array('top'=>'80', 'left'=>'-40')
+          'position'=>array('top'=>'80', 'left'=>'10')
         )
       )
     ),
@@ -45,6 +45,16 @@ $data =array(
         array(
           'selector'=> '.tree_col_status:eq(0)',
           'copy'=>'By click on this it will toggle the status of the content item, allowing you to quickly turn pages on &amp; off',
+          'position'=>array('top'=>'80', 'left'=>'-40')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.view_children_link:eq(0)',
+          'copy'=>'This button signifies that this content item has children underneath it. To view those children, just click on this and it will be shown underneath.',
+          'fallback_copy'=>'If a content item has children you will get an icon to show that; clicking on that icon will show the child pages',
           'position'=>array('top'=>'80', 'left'=>'-40')
         )
       )
