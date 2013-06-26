@@ -5,9 +5,47 @@ $data =array(
     array(
       'elements'=>array(
         array(
-          'selector'=> '.index_container',
+          'selector'=> '.filters_pagination',
           'copy'=>'These filters allow you to search the content tree for various things, give them a try by changing what they say. Results are shown in a listing underneath.',
           'position'=>array('top'=>'85', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_node:eq(0)',
+          'copy'=>'This is a content item. You can see the title and some basic information about the content and change its status.',
+          'fallback_copy'=>'Normally you have a set of buttons listing things you can do',
+          'position'=>array('top'=>'80', 'left'=>'-40')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_operations:eq(0)',
+          'copy'=>'These buttons typically allow you to go to the editing page, add a child of this page or make a copy of the page.',
+          'fallback_copy'=>'Normally you have a set of buttons listing things you can do',
+          'position'=>array('top'=>'80', 'left'=>'-40')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_col_status:eq(0)',
+          'copy'=>'This shows you the current status of the item. In conjunction with the start &amp; end date these determine if the page is visible on the front end',
+          'position'=>array('top'=>'80', 'left'=>'-40')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_col_status:eq(0)',
+          'copy'=>'By click on this it will toggle the status of the content item, allowing you to quickly turn pages on &amp; off',
+          'position'=>array('top'=>'80', 'left'=>'-40')
         )
       )
     )
