@@ -42,13 +42,34 @@ $data =array(
     array(
       'elements'=>array(
         array(
-          'trigger'=>array('selector'=>'.ach-dates', 'event'=>'click'),
+          'trigger'=>array('selector'=>'.ach-dates', 'event'=>'click', 'listen'=>'accordionactivate', 'listen_selector'=>'.accordion'),
           'selector'=> '#content_tab_content .ac-dates',
           'copy'=>'In these accordions you can change secondary information for the page. Fields such as these start &amp; end dates effect the visibility of this page on the website.',
           'position'=>array('top'=>'-55', 'left'=>'-10')
         )
       )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'trigger'=>array('selector'=>'.ach-urls', 'event'=>'click', 'listen'=>'accordionactivate', 'listen_selector'=>'.accordion'),
+          'selector'=> '#content_tab_content .ac-urls',
+          'copy'=>'If you want to create a custom url for this page, you can do it here. However, this won\'t add any analytics tracking.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'trigger'=>array('selector'=>'.ach-meta-data', 'event'=>'click', 'listen'=>'accordionactivate', 'listen_selector'=>'.accordion'),
+          'selector'=> '#content_tab_content .ac-meta-data',
+          'copy'=>'By default the CMS will add in meta information based on the page. If you edit these fields you can overwrite that for these pages.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
     )
+
 
     //DESIGN TAB
     //MEDIA TAB
