@@ -1,0 +1,23 @@
+<?
+$data =array(
+  'introduction'=>"<p>This page allows you to edit the content item including such things as title, content &amp; attached media.</p>",
+  'steps'=> array(
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tabs_nav:visible:eq(0)',
+          'copy'=>'Content editing is generally split into main sections, these are shown in these tabs.',
+          'position'=>array('top'=>'95', 'left'=>'0'),
+          'trigger'=>array('selector'=>'.tabs_nav li:eq(1) a', 'event'=>'click')
+        )
+      )
+    ),
+    //CONTENT TAB
+    //DESIGN TAB
+    //MEDIA TAB
+  )
+);
+
+?>
+
+<?=json_encode($data);?>

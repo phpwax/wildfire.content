@@ -52,10 +52,10 @@ $data =array(
     array(
       'elements'=>array(
         array(
-          'selector'=> '.view_children_link:eq(0)',
+          'selector'=> '.view_children_link:eq(0) b',
           'copy'=>'This button signifies that this content item has children underneath it. To view those children, just click on this and it will be shown underneath.',
           'fallback_copy'=>'If a content item has children you will get an icon to show that; clicking on that icon will show the child pages',
-          'position'=>array('top'=>'80', 'left'=>'-40')
+          'position'=>array('top'=>'40', 'left'=>'0')
         )
       )
     )
