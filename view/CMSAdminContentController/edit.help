@@ -64,15 +64,72 @@ $data =array(
         array(
           'trigger'=>array('selector'=>'.ach-meta-data', 'event'=>'click', 'listen'=>'accordionactivate', 'listen_selector'=>'.accordion'),
           'selector'=> '#content_tab_content .ac-meta-data',
-          'copy'=>'By default the CMS will add in meta information based on the page. If you edit these fields you can overwrite that for these pages.',
+          'copy'=>'By default the CMS will add in meta information based on the page. If you edit these fields you can overwrite that for this page.',
           'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    ),
+    //DESIGN TAB
+    array(
+      'elements'=>array(
+        array(
+          'trigger'=>array('selector'=>'#tab-design a', 'event'=>'click'),
+          'selector'=> '.tabs_nav',
+          'copy'=>'Inside the design tab you change settings that effect the layout of this page.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.design-header',
+          'copy'=>'If applicable, you can change the format of the preview area to mimic a tablet or phone.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.design_changer_container .field-pagetype',
+          'copy'=>'By altering what is selected here you can change how the page is laid out. The preview panel below updates automatically.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    //MEDIA TAB
+    array(
+      'elements'=>array(
+        array(
+          'trigger'=>array('selector'=>'#tab-media a', 'event'=>'click'),
+          'selector'=> '.tabs_nav',
+          'copy'=>'Inside the media tab you can add or update what images / files are attached to this page.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.embedded-media-listing-holder',
+          'copy'=>'Here you have a list of available media. By using the filter box &amp; dropdowns you can look for specific files.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.embedded-media-attachements',
+          'copy'=>'This section lists all the media that are already attached to this content item.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
         )
       )
     )
 
 
-    //DESIGN TAB
-    //MEDIA TAB
+
   )
 );
 
