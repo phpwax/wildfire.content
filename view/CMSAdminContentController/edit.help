@@ -121,14 +121,21 @@ $data =array(
     array(
       'elements'=>array(
         array(
+          'selector'=> '.embedded-media-listing-holder .media-listing-item:eq(0)',
+          'copy'=>'By hovering over an item you get options to add / remove, download and edit the file.',
+          'position'=>array('top'=>'-35', 'left'=>'10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
           'selector'=> '.embedded-media-attachements',
           'copy'=>'This section lists all the media that are already attached to this content item.',
           'position'=>array('top'=>'-35', 'left'=>'10')
         )
       )
     )
-
-
 
   )
 );
