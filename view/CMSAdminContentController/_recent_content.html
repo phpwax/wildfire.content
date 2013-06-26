@@ -3,7 +3,7 @@ $cachelink = Config::get('cacheissue');
 if(!$live) unset($permissions['child']);
 ?>
 <?if($content && $content->count()):?>
-<div class='row indented'>
+<div class='row indented <?if($live):?>live-content<?else:?>draft-content<?endif?>'>
   <h2><?if($live):?>Recently <strong>Published</strong> Content<?else:?>Recent <strong>Draft</strong> Content<?endif?></h2>
   <div class='listing'>
     <table>
