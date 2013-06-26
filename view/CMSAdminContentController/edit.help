@@ -6,13 +6,50 @@ $data =array(
       'elements'=>array(
         array(
           'selector'=> '.tabs_nav:visible:eq(0)',
-          'copy'=>'Content editing is generally split into main sections, these are shown in these tabs.',
-          'position'=>array('top'=>'95', 'left'=>'0'),
-          'trigger'=>array('selector'=>'.tabs_nav li:eq(1) a', 'event'=>'click')
+          'copy'=>'Editing is generally divided in to some top level sections and displayed as tabs. Within each tab the data can de split again into further groups.',
+          'position'=>array('top'=>'95', 'left'=>'0')
         )
       )
     ),
     //CONTENT TAB
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '#content_tab_content .raised:eq(0)',
+          'copy'=>'Within the "Content" tab you\'re presented with an open set of fields to edit. These allow you to change its title &amp; the actual body content that will be shown on the page.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '#content_tab_content .field-content-title',
+          'copy'=>'When you first create the page the title (and the position in the tree) are used to create a permanent url for this page (known as a permalink). It\'s normally used as the window title as well and in internal navigation.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '#content_tab_content .field-content-content',
+          'copy'=>'This editor allows you to manipulate the body content of the page. You can see it has various tools and works in a very similar way to word. It does have a couple of extra features, such as templating and custom styling.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'trigger'=>array('selector'=>'.ach-dates', 'event'=>'click'),
+          'selector'=> '#content_tab_content .ac-dates',
+          'copy'=>'In these accordions you can change secondary information for the page. Fields such as these start &amp; end dates effect the visibility of this page on the website.',
+          'position'=>array('top'=>'-55', 'left'=>'-10')
+        )
+      )
+    )
+
     //DESIGN TAB
     //MEDIA TAB
   )
