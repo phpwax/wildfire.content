@@ -10,7 +10,7 @@ if(!$live) unset($permissions['child']);
     <?foreach($content as $page):?>
     <tr>
       <td class='title'><a href="/admin/content/edit/<?=$page->primval?>/"><?=$page->title?></a></td>
-      <td  class='in'><em>in:</em>&nbsp;&nbsp;<?if(($parent = $page->parent)):?><?=$parent->title?><?endif?></td>
+      <td  class='in'><?if($page->parent_id && ($parent = $page->parent)):?><em>in:</em>&nbsp;&nbsp;<?=$parent->title?><?endif?></td>
       <td class='on'><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
       <td class='operations'>
         <?=partial("_operations", array('singular'=>"Content", "current_user"=>$current_user,"permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$page, "cachelink"=>$cachelink, 'operation_actions'=>$operation_actions ))?>
