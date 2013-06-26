@@ -1,0 +1,20 @@
+<?
+$data =array(
+  'introduction'=>"<p>This listing shows a tree of all the content being used on your website.</p>",
+  'steps'=> array(
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.index_container',
+          'copy'=>'These filters allow you to search the content tree for various things, give them a try by changing what they say. Results are shown in a listing underneath.',
+          'position'=>array('top'=>'85', 'left'=>'-10')
+        )
+      )
+    )
+
+  )
+);
+
+?>
+
+<?=json_encode($data);?>

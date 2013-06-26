@@ -30,6 +30,7 @@ class CMSAdminContentController extends AdminComponent {
                                                   'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child'),
                                                   'copy'=>array('action'=>'duplicate', 'name'=>'Copy'),
                                                 );
+  public $has_help = array('index');
 
 
   protected function events(){
