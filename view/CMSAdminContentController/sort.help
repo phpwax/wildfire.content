@@ -1,0 +1,31 @@
+<?
+$data =array(
+  'introduction'=>"<p>This listing allows you to re arrange content in to the order you want.</p>",
+  'steps'=> array(
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_node:eq(0)',
+          'copy'=>'By simply dragging one of these rows around you are re ording the content. Move them around till you are happy with the order and this will be reflected on the website.',
+          'fallback_copy'=>'Normally you would get a listing of all top level content on this page. You can drag those items around to change the ordering.',
+          'position'=>array('top'=>'-25', 'left'=>'-10')
+        )
+      )
+    ),
+    array(
+      'elements'=>array(
+        array(
+          'selector'=> '.tree_operations .operation_sort:eq(0)',
+          'copy'=>'To sort the children of a content item just click on this and it will take you to a listing for this pages children.',
+          'fallback_copy'=>'On content items with children you will get a sort button which allows you to sort their children',
+          'position'=>array('top'=>'35', 'left'=>'-250')
+        )
+      )
+    )
+
+  )
+);
+
+?>
+
+<?=json_encode($data);?>
