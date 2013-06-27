@@ -4,7 +4,7 @@ jQuery(document).ready(function(){
     setTimeout(function(){
 
       jQuery(".design_preview iframe").attr("src",res.model.row.permalink+"?preview="+res.meta.model.primval).get(0).contentWindow.location.reload();
-    }, 600);
+    }, 1000);
   });
 
   jQuery(".field-design-pagetype select, .field-design-layout select").bind("change", function(){
