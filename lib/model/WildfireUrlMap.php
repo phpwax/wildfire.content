@@ -25,6 +25,7 @@ class WildfireUrlMap extends WaxModel{
     $this->define("status", "IntegerField", array("maxlength"=>3, 'widget'=>"SelectInput", 'choices'=>array("Draft/Revision", "Live"), 'scaffold'=>true) );
     $this->define("date_start", "DateTimeField");
     $this->define("date_end", "DateTimeField");
+    parent::setup();
   }
 
   public function before_save(){
