@@ -1,5 +1,6 @@
 <?
 $data =array(
+  'action'=>$action,
   'introduction'=>"<p>This listing shows a tree of all the content being used on your website.</p>",
   'steps'=> array(
     array(

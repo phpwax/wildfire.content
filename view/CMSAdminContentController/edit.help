@@ -1,5 +1,6 @@
 <?
 $data =array(
+  'action'=>$action,
   'introduction'=>"<p>This page allows you to edit the content item including such things as title, content &amp; attached media.</p>",
   'steps'=> array(
     array(

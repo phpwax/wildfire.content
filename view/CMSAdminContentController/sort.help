@@ -1,5 +1,6 @@
 <?
 $data =array(
+  'action'=>$action,
   'introduction'=>"<p>This listing allows you to re arrange content in to the order you want.</p>",
   'steps'=> array(
     array(
