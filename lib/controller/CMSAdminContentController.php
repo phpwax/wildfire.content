@@ -28,7 +28,7 @@ class CMSAdminContentController extends AdminComponent {
   public $operation_actions = array(
                                                   'edit'=>array('action'=>'edit', 'name'=>'<b>✎</b>Edit %s'),
                                                   'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child'),
-                                                  'copy'=>array('action'=>'duplicate', 'name'=>'Copy'),
+                                                  //'copy'=>array('action'=>'duplicate', 'name'=>'Copy'),
                                                 );
   public $has_help = array('index', 'edit', 'sort');
 
