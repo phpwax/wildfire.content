@@ -25,6 +25,9 @@ class WildfireContent extends WaxTreeModel {
 
     $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
 
+    if(class_exists("WildfireCategory")){
+      $this->define("categories", "ManyToManyField", array('target_model'=>"WildfireCategory","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'scaffold'=>true, 'group'=>'relationships', 'info_preview'=>1));
+    }
 
     //hidden extras
     $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
