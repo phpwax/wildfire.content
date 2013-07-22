@@ -1,5 +1,5 @@
 <?
-$data =array(
+$this->help_data = array(
   'action'=>$action,
   'introduction'=>"<p>This page allows you to edit the content item including such things as title, content &amp; attached media.</p>",
   'steps'=> array(
@@ -172,7 +172,7 @@ $data =array(
   )
 );
 
-WaxEvent::run("help.".$module_name.".".$action.".extend", $data);
+WaxEvent::run("help.".$module_name.".".$action.".extend", $this);
 ?>
 
-<?=json_encode($data);?>
+<?=json_encode($this->help_data);?>

@@ -1,5 +1,5 @@
 <?
-$data =array(
+$this->help_data = array(
   'action'=>$action,
   'introduction'=>"<p>This listing allows you to re arrange content in to the order you want.</p>",
   'steps'=> array(
@@ -26,7 +26,7 @@ $data =array(
 
   )
 );
-WaxEvent::run("help.".$module_name.".".$action.".extend", $data);
+WaxEvent::run("help.".$module_name.".".$action.".extend", $this);
 ?>
 
-<?=json_encode($data);?>
+<?=json_encode($this->help_data);?>

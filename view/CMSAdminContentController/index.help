@@ -1,5 +1,5 @@
 <?
-$data =array(
+$this->help_data = array(
   'action'=>$action,
   'introduction'=>"<p>This listing shows a tree of all the content being used on your website.</p>",
   'steps'=> array(
@@ -64,7 +64,7 @@ $data =array(
   )
 );
 
-WaxEvent::run("help.".$module_name.".".$action.".extend", $data);
+WaxEvent::run("help.".$module_name.".".$action.".extend", $this);
 ?>
 
-<?=json_encode($data);?>
+<?=json_encode($this->help_data);?>
