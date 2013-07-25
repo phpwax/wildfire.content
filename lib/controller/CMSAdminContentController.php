@@ -37,7 +37,7 @@ class CMSAdminContentController extends AdminComponent {
     parent::events();
     WaxEvent::add("cms.duplicate.unsets", function(){
       $controller = WaxEvent::data();
-      unset($controller->columns['revision'], $controller->columns['status'], $controller->columns['parent'], $controller->columns['navigation_items'], $controller->columns['id']);
+      unset($controller->columns['permalink'], $controller->columns['revision'], $controller->columns['status'], $controller->columns['parent'], $controller->columns['navigation_items'], $controller->columns['id']);
     });
 
     WaxEvent::add("cms.url.delete", function(){
