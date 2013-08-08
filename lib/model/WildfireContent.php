@@ -289,7 +289,7 @@ class WildfireContent extends WaxTreeModel {
   }
 
   public function format_content() {
-    return CmsTextFilter::filter("before_output", $this->content);
+    return str_replace("__t__", "", CmsTextFilter::filter("before_output", $this->content) );
   }
 
 
