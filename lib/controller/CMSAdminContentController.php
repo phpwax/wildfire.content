@@ -5,40 +5,54 @@
 */
 class CMSAdminContentController extends AdminComponent {
   public $tree_layout = true;
-	public $module_name = "content";
-	public $model_class = 'WildfireContent';
-	public $model_scope = 'admin';
-	public $export_scope = "live";
-	public $display_name = "Content";
-  public $sortable = false;
+  public $module_name = "content";
+  public $singular = "Content";
+  public $model_class = 'WildfireContent';
+  public $model_scope = 'admin';
+  public $model_search_scope = 'live';
+  public $export_scope = "live";
+  public $display_name = "Content";
+  public $sortable = true;
+  public $sort_scope = "live";
   public $per_page = 5; //lower per page since there's a tree underneath
   public $limit_revisions = 20; //limit revisions as it may cause problems
-	public $filter_fields=array(
-                          'text' => array('columns'=>array('title'), 'partial'=>'_filters_text', 'fuzzy'=>true),
-                          'parent' => array('columns'=>array('parent_id'), 'partial'=>'_filters_parent'),
+  public $filter_fields=array(
+                          'text' => array('columns'=>array('title', 'permalink', 'id'), 'partial'=>'_filters_text', 'fuzzy'=>true),
+                          'parent' => array('columns'=>array('parent_id'), 'partial'=>false),
                           'author' => array('columns'=>array('wildfire_user_id'), 'partial'=>"_filters_author"),
                           'date_start' => array('columns'=>array('date_start', 'date_modified'), 'partial'=>"_filters_date", 'fuzzy_right'=>true),
-                          'language' => array('columns'=>array('language'), 'partial'=>"_filters_language")
-	                      );
+                          'language' => array('columns'=>array('language'), 'partial'=>"_filters_hidden")
+                        );
   public $autosave = true;
   public static $restricted_tree = true;
+  public $operation_actions = array(
+                                                  'edit'=>array('action'=>'edit', 'name'=>'<b>✎</b>Edit %s'),
+                                                  'child'=>array('action'=>'child', 'name'=>'<b>⊞</b>Add Child'),
+                                                  //'duplicate'=>array('action'=>'duplicate', 'name'=>'Duplicate')
+                                                );
+  public $has_help = array('index', 'edit', 'sort');
 
-	protected function events(){
-	  parent::events();
 
-	  WaxEvent::add("cms.url.delete", function(){
-	    if(($id = Request::param('map_remove')) && ($check = new WildfireUrlMap($id)) && $check->primval){
-	      WaxEvent::data()->session->add_message($check->origin_url.' has been deleted.');
-	      $check->delete();
+  protected function events(){
+    parent::events();
+    WaxEvent::add("cms.duplicate.unsets", function(){
+      $controller = WaxEvent::data();
+      unset($controller->columns['permalink'], $controller->columns['revision'], $controller->columns['status'], $controller->columns['parent'], $controller->columns['navigation_items'], $controller->columns['id']);
+    });
+
+    WaxEvent::add("cms.url.delete", function(){
+      if(($id = Request::param('map_remove')) && ($check = new WildfireUrlMap($id)) && $check->primval){
+        WaxEvent::data()->session->add_message($check->origin_url.' has been deleted.');
+        $check->delete();
       }
-	  });
+    });
 
-	  WaxEvent::add('cms.url.add', function(){
-	    $obj = WaxEvent::data();
-	    $saved = $obj->model;
-	    $class = get_class($saved);
-	    $primval = $saved->primval;
-	    //if its a revision, status should be hidden
+    WaxEvent::add('cms.url.add', function(){
+      $obj = WaxEvent::data();
+      $saved = $obj->model;
+      $class = get_class($saved);
+      $primval = $saved->primval;
+      //if its a revision, status should be hidden
       if($revision = $saved->revision()) $status = 0;
       else $status = $saved->status;
       if($maps = Request::param('url_map')){
@@ -53,7 +67,7 @@ class CMSAdminContentController extends AdminComponent {
         }
       }
 
-	  });
+    });
 
 
     /**
@@ -72,14 +86,14 @@ class CMSAdminContentController extends AdminComponent {
 
       }
     });
-	  //overwrite existing events - handle the revision change
-	  WaxEvent::add("cms.save.before", function(){
-	    $obj = WaxEvent::data();
-	    $obj->old_parent_id = $obj->model->parent_id;
-	    if(Request::param('revision')){
-	      $obj->master = $obj->model;
-	      $obj->model = $obj->model->copy();
-  	    $obj->form = new WaxForm($obj->model);
+    //overwrite existing events - handle the revision change
+    WaxEvent::add("cms.save.before", function(){
+      $obj = WaxEvent::data();
+      $obj->old_parent_id = $obj->model->parent_id;
+      if(Request::param('revision')){
+        $obj->master = $obj->model;
+        $obj->model = $obj->model->copy();
+        $obj->form = new WaxForm($obj->model);
       }
     });
     //if the model is a revision or alt language dont let them edit the parent as this would break the nav
@@ -91,7 +105,7 @@ class CMSAdminContentController extends AdminComponent {
     WaxEvent::clear("cms.save.success");
     //status changing after save
     WaxEvent::add("cms.save.success", function(){
-	    $obj = WaxEvent::data();
+      $obj = WaxEvent::data();
       //this is a bit naughty, but status column is required pretty much anyway...
       if($obj->form->status->editable){
         if($obj->form->status->value == 1) $obj->model->generate_permalink()->map_live()->children_move()->show()->save();
@@ -100,47 +114,51 @@ class CMSAdminContentController extends AdminComponent {
       elseif(Request::param('hide')) $obj->model->generate_permalink()->map_hide()->hide()->save();
       elseif(Request::param('revision')) $obj->model->generate_permalink()->hide()->update_attributes(array('revision'=>Request::param('id')))->map_revision();
       //look for url map saves
-	    WaxEvent::run('cms.url.add', $obj);
-	    WaxEvent::run('cms.joins.handle', $obj);
+      WaxEvent::run('cms.url.add', $obj);
+      WaxEvent::run('cms.joins.handle', $obj);
       WaxEvent::run('cms.file.tag', $obj);
-	    //checking for cicular references..
-	    WaxEvent::run("cms.save.sanity_check", $obj);
-  	  WaxEvent::run("cms.save.success.finished", $obj);
-  	  if($obj->use_layout) $obj->redirect_to("/".trim($obj->controller,"/")."/edit/".$obj->model->primval."/");
+      //checking for cicular references..
+      WaxEvent::run("cms.save.sanity_check", $obj);
+      WaxEvent::run("cms.save.success.finished", $obj);
+      if($obj->use_layout) $obj->redirect_to("/".trim($obj->controller,"/")."/edit/".$obj->model->primval."/");
     });
     //modify the post filter function to enforce a status filter - they bubble..
     WaxEvent::add("cms.model.filters", function(){
       $obj = WaxEvent::data();
       if(!isset($obj->model_filters['language']) && $obj->model && $obj->model->columns['language']){
-        $obj->model_filters['language'] = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
-        $obj->model->filter("language",  $obj->model_filters['language']);
+        $default_language = array_shift(array_keys($obj->model->columns['language'][1]['choices']));
+        $obj->model->filter("language", $default_language);
       }
     });
 
     WaxEvent::add("cms.tree.setup", function(){
       $controller = WaxEvent::data();
-      $controller->tree_model->filter('revision',0);
+      if(isset($controller->tree_model->columns["revision"])) $controller->tree_model->filter('revision',0);
+    });
+    WaxEvent::add("cms.tree.setup.children", function(){
+      $controller = WaxEvent::data();
+      if(isset($controller->tree_model->columns["revision"])) $controller->tree_model->filter('revision',0);
     });
 
     WaxEvent::clear("cms.model.copy");
     WaxEvent::add("cms.model.copy", function(){
-	    $obj = WaxEvent::data();
-	    $source = $obj->source_model;
-	    $changes = Request::param('change');
-	    $destination_model = $obj->source_model->copy();
-	    //check to see if the source has a parent, if it has, then look for a matching language version
-	    if($source->parent_id && $changes && isset($changes['language'])){
-	      $class = get_class($source);
-	      $model = new $class("live");
-	      if($alt_parent = $model->filter("permalink", $source->parent->permalink)->filter("language", $changes['language'])->first()) $changes['parent_id'] = $alt_parent->primval;
+      $obj = WaxEvent::data();
+      $source = $obj->source_model;
+      $changes = Request::param('change');
+      $destination_model = $obj->source_model->copy();
+      //check to see if the source has a parent, if it has, then look for a matching language version
+      if($source->parent_id && $changes && isset($changes['language'])){
+        $class = get_class($source);
+        $model = new $class("live");
+        if($alt_parent = $model->filter("permalink", $source->parent->permalink)->filter("language", $changes['language'])->first()) $changes['parent_id'] = $alt_parent->primval;
 
-	    }
+      }
       if($changes) $destination_model->update_attributes($changes);
       if($destination_model) $destination_model->map_revision();
       $obj->redirect_to("/".trim($obj->controller,"/")."/edit/".$destination_model->primval."/");
-	  });
+    });
 
-    WaxEvent::add("cms.edit.init", function(){
+    WaxEvent::add("cms.save.after", function(){
       $controller = WaxEvent::data();
       $model = $controller->model;
 
@@ -173,12 +191,12 @@ class CMSAdminContentController extends AdminComponent {
         $controller->messages[] = array("message"=>"Putting this page live will change the structure of the site.", "class"=>"error");
       }
     });
-	}
+  }
 
-	protected function initialise(){
-	  parent::initialise();
+  protected function initialise(){
+    parent::initialise();
     WaxEvent::run("cms.model.tree",$this);
-	}
+  }
 
   public function _parent(){
     if($this->use_format == "ajax"){
@@ -259,6 +277,43 @@ class CMSAdminContentController extends AdminComponent {
     $this->use_layout = $this->use_view = false;
   }
 
+
+
+  public function _recent_content(){
+    $model = new $this->model_class;
+    if($this->live) $model->scope("live");
+    else $model->filter("status", 0);
+    $this->permissions = $permissions = $this->current_user->permissions($this->operation_actions, $this->module_name);
+    if( ($pid = $this->current_user->restricted_tree($this->model_class) ) ){
+      if(!$pid[1]) $pid[1] = "parent_id";
+      if($pid[0]){
+        $ids = explode(",", $pid[0]);
+        $model->filter($pid[1], $ids);
+      }
+    }
+
+    $this->content = $model->order("date_modified DESC")->limit(5)->all();
+  }
+
+  public function child(){
+    $model = new $this->model_class;
+    $this->redirect_to("/".$this->controller."/create/?".$model->table."[parent_id]=".Request::param("id"));
+  }
+
+  public function status_toggle(){
+    $this->use_view = "edit";
+    $class = $this->model_class;
+    $model = new $class(Request::param("id"));
+    if($model->columns['status']){
+      if($model->status){
+        $model->status = 0;
+        $model->generate_permalink()->map_hide()->hide()->save();
+      }else{
+        $model->status = 1;
+        $model->generate_permalink()->map_live()->children_move()->show()->save();
+      }
+    }else throw new Exception("No status to change");
+  }
 
 
 }

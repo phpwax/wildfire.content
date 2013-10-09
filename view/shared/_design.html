@@ -1,13 +1,23 @@
 <div class='design_changer_container clearfix'>
+  <div class="design-header clearfix">
+    <div class='responsive_switcher'>
+      <?$r=0;?>
+    <?foreach(Config::get("cms-responsive") as $name=>$item):?>
+      <a href="#" data-name="<?=$name?>" data-w="<?=$item['w']?>" data-h="<?=$item['h']?>" class='responsive-setting <?if($r==0):?>active-responsive<?endif?>'><img src="<?=$item['img']?>" alt=""></a>
+      <?$r++;?>
+    <?endforeach?>
+    </div>
+    <h3>Pick a design and preview</h3>
+  </div>
   <div class='selection_strip clearfix'>
   <?foreach($fields as $n=>$f):?>
   <?$nm = Inflections::to_url($n)?>
-  <?if($f->widget != "HiddenInput"):?><div class='field field-<?=$nm?> field-<?=$tabhash?>-<?=$nm?> <?=$model_class?>-<?=$nm?> clearfix'><?endif?>
+  <?if($f->widget != "HiddenInput"):?><div class='field field-<?=$nm?> field-<?=$tabhash?>-<?=$nm?> field-<?=$f->widget?> <?=$model_class?>-<?=$nm?> clearfix'><?endif?>
   <?=$f->render()?>
   <?if($f->widget != "HiddenInput"):?></div><?endif?>
   <?endforeach?>
   </div>
   <div class='design_preview'>
-    <iframe src="" width="100%"></iframe>
+    <iframe src="<?if($model && $model->permalink):?><?=$model->permalink?>?preview=<?=$model->primval?><?endif?>" width="100%"></iframe>
   </div>
 </div>

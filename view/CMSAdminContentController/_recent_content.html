@@ -1,0 +1,23 @@
+<?
+$cachelink = Config::get('cacheissue');
+if(!$live) unset($permissions['child']);
+?>
+<?if($content && $content->count()):?>
+<div class='row indented <?if($live):?>live-content<?else:?>draft-content<?endif?>'>
+  <h2><?if($live):?>Recently <strong>Published</strong> Content<?else:?>Recent <strong>Draft</strong> Content<?endif?></h2>
+  <div class='listing'>
+    <table>
+    <?foreach($content as $page):?>
+    <tr>
+      <td class='title'><a href="/admin/content/edit/<?=$page->primval?>/"><?=$page->title?></a></td>
+      <td  class='in'><?if($page->parent_id && ($parent = $page->parent)):?><em>in:</em>&nbsp;&nbsp;<?=$parent->title?><?endif?></td>
+      <td class='on'><em>on:</em>&nbsp;&nbsp;<?=date("jS M Y", strtotime($page->date_modified) )?></td>
+      <td class='operations'>
+        <?=partial("_operations", array('singular'=>"Content", "current_user"=>$current_user,"permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$page, "cachelink"=>$cachelink, 'operation_actions'=>$operation_actions ))?>
+      </td>
+    </tr>
+    <?endforeach?>
+    </table>
+  </div>
+</div>
+<?endif?>

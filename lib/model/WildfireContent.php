@@ -3,13 +3,13 @@
 class WildfireContent extends WaxTreeModel {
   public $identifier = "title";
   public static $view_listing_cache = array();
-  public static $layout_listing_cache = array();
+  public static $page_types_cache;
 
 
   public function setup(){
 
-    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content') );
-    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content'));
+    $this->define("title", "CharField", array('export'=>true, 'maxlength'=>255, 'scaffold'=>true, 'default'=>"enter title here", 'info_preview'=>1, 'group'=>'content', 'primary_group'=>1) );
+    $this->define("content", "TextField", array('widget'=>"TinymceTextareaInput", 'group'=>'content', 'primary_group'=>1));
 
 
     $this->define("date_start", "DateTimeField", array('export'=>true, 'default'=>"now", 'output_format'=>"j F Y H:i",'input_format'=> 'j F Y H:i', 'info_preview'=>1, 'group'=>'dates'));
@@ -19,31 +19,34 @@ class WildfireContent extends WaxTreeModel {
     $langs = array();
     foreach(CMSApplication::$languages as $i=>$l) $langs[$i] = $l['name'];
     $default = array_shift(array_keys(CMSApplication::$languages));
-    $this->define("language", "IntegerField", array('export'=>true, 'choices'=>$langs, 'default'=>$default, 'group'=>'language', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
+    $this->define("language", "IntegerField", array('export'=>true, 'widget'=>"SelectInput", 'choices'=>$langs, 'default'=>$default, 'group'=>'extras', 'editable'=>true, 'scaffold'=> (count(CMSApplication::$languages)>1)?true:false, 'info_preview'=>1));
 
     //main grouping field
     $this->define("permalink", "CharField", array('export'=>true, 'group'=>'urls'));
 
-    $this->define("excerpt", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_description", "TextField", array('group'=>'others', 'editable'=>false));
-    $this->define("meta_keywords", "TextField", array('group'=>'others', 'editable'=>false));
+    $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
+
+    if(class_exists("WildfireCategory")){
+      $this->define("categories", "ManyToManyField", array('target_model'=>"WildfireCategory","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'scaffold'=>true, 'group'=>'relationships', 'info_preview'=>1));
+    }
 
     //hidden extras
-    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput", 'group'=>'sort'));
+    $this->define("sort", "IntegerField", array('maxlength'=>3, 'default'=>0, 'widget'=>"HiddenInput"));
     $this->define("date_modified", "DateTimeField", array('export'=>true, 'scaffold'=>true, "editable"=>false));
     $this->define("date_created", "DateTimeField", array('export'=>true, "editable"=>false));
 
-    $this->define("revision", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput", 'editable'=>false));
+    $this->define("revision", "IntegerField", array("group"=>"revision", "default"=>0, 'widget'=>"HiddenInput", 'editable'=>true));
     $this->define("alt_language", "IntegerField", array("default"=>0, 'widget'=>"HiddenInput"));
-
-    $this->define("layout", "CharField", array('widget'=>'SelectInput', 'choices'=>$this->cms_layouts(),'group'=>'design'));
 
     $this->define("status", "IntegerField", array('default'=>0, 'maxlength'=>2, "widget"=>"SelectInput", "choices"=>array(0=>"Not Live",1=>"Live"), 'scaffold'=>true, 'editable'=>false, 'label'=>"Live", 'info_preview'=>1, "tree_scaffold"=>1));
 
     $this->define("old_id", "IntegerField", array('editable'=>false));
 
-    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types() ));
+    $this->define("page_type", "CharField", array('group'=>'design', 'widget'=>'SelectInput', 'choices'=>self::page_types(), 'primary_group'=>1));
     parent::setup();
+    $this->define("meta_title", "CharField", array('group'=>'meta data', 'editable'=>true));
+    $this->define("meta_description", "TextField", array('group'=>'meta data', 'editable'=>true));
+    $this->define("meta_keywords", "TextField", array('group'=>'meta data', 'editable'=>true));
 
   }
 
@@ -63,10 +66,11 @@ class WildfireContent extends WaxTreeModel {
   }
 
   public static function page_types(){
+    if(self::$page_types_cache) return self::$page_types_cache;
     $pattern = VIEW_DIR."page/__*.html";
     $options = array(""=>"-- select --");
     foreach(glob($pattern) as $file) $options[ltrim(str_replace(".html", "", str_replace(VIEW_DIR."page", "", $file)),"/")] = ucwords(str_replace("_", " ", str_replace("/", "", basename($file, ".html"))));
-    return $options;
+    return self::$page_types_cache = $options;
   }
 
   public function tree_setup(){
@@ -79,12 +83,12 @@ class WildfireContent extends WaxTreeModel {
 
   public function scope_admin(){
     WaxEvent::run(get_class($this).".scope.admin", $this);
-    return $this->order("sort ASC, date_modified DESC");
+    return $this;
   }
 
   public function scope_live(){
     WaxEvent::run(get_class($this).".scope.live", $this);
-    return $this->filter("status", 1)->filter("TIMESTAMPDIFF(SECOND, `date_start`, NOW()) >= 0")->filter("(`date_end` <= `date_start` OR (`date_end` >= `date_start` AND `date_end` >= NOW()) )")->order("sort ASC, date_start DESC");
+    return $this->filter("status", 1)->filter("TIMESTAMPDIFF(SECOND, ".$this->table.".`date_start`, NOW()) >= 0")->filter("(".$this->table.".`date_end` <= ".$this->table.".`date_start` OR (".$this->table.".`date_end` >= ".$this->table.".`date_start` AND ".$this->table.".`date_end` >= NOW()) )")->order($this->table.".sort ASC, ".$this->table.".date_start DESC");
   }
   public function scope_preview(){
     WaxEvent::run(get_class($this).".scope.preview", $this);
@@ -92,7 +96,7 @@ class WildfireContent extends WaxTreeModel {
   }
   public function scope_multipleselect(){
     WaxEvent::run(get_class($this).".scope.multipleselect", $this);
-    return $this->scope_live()->filter("id", $this->primval, "!=")->order("date_modified DESC");
+    return $this->scope_live()->filter("id", $this->primval, "!=")->order($this->table.".date_modified DESC");
   }
 
   public function before_save(){
@@ -245,7 +249,7 @@ class WildfireContent extends WaxTreeModel {
 
   public function url(){
 
-    if($this->title != $this->columns['title'][1]['default']) return Inflections::to_url($this->title);
+    if($this->title != $this->columns['title'][1]['default']) return Inflections::to_url(trim($this->title));
     else return false;
   }
   /**
@@ -268,20 +272,6 @@ class WildfireContent extends WaxTreeModel {
     return $return;
   }
 
-  public function cms_layouts(){
-    if(count(WildfireContent::$layout_listing_cache)) return WildfireContent::$layout_listing_cache;
-    $dir = VIEW_DIR."layouts/";
-    $return = array(''=>'-- Select Layout --');
-    if(is_dir($dir) && ($files = glob($dir."*.html"))){
-      foreach($files as $f){
-        $i = str_replace($dir, "", $f);
-        $return[$i] = str_replace("_", " ", basename($f, ".html"));
-      }
-    }
-    WildfireContent::$layout_listing_cache = $return;
-    return $return;
-  }
-
    //this will need updating when the framework can handle manipulating join columns
   public function file_meta_set($fileid, $tag, $order=0, $title=''){
 
@@ -301,7 +291,7 @@ class WildfireContent extends WaxTreeModel {
   }
 
   public function format_content() {
-    return CmsTextFilter::filter("before_output", $this->content);
+    return str_replace("__t__", "", CmsTextFilter::filter("before_output", $this->content) );
   }
 
 
