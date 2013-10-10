@@ -9,7 +9,7 @@ class CmsTextFilter  {
   
   
   static public $filters = array(
-    "before_save"=>array("convert_chars", "strip_attributes", "strip_slashes", "embedded_images","inline_images"),
+    "before_save"=>array("convert_chars", "strip_attributes", "strip_slashes", "embedded_images","inline_images","media_links"),
     "before_output"=> array("strip_slashes","empty_paragraphs", "first_para_hook")
   );
   
@@ -266,6 +266,23 @@ class CmsTextFilter  {
     }    
     return $text;
   }
+
+  static public function media_links($text) {
+    $doc = new DOMDocument();
+    @$doc->loadHTML($text);
+    $tags = $doc->getElementsByTagName('img');
+    foreach ($tags as $tag) {
+      if(substr($tag->getAttribute("src"),0,3) == "/m/") {
+        if($wid = $tag->getAttribute("width")) {
+          $path_parts = pathinfo($tag->getAttribute("src"));
+          $tag->setAttribute("src", $path_parts["dirname"]."/".$wid.".".$path_parts["extension"]);
+          $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());;
+        }
+      }
+    }
+    return $text;
+  } 
+
 
 
   static public function embedded_images($text) {
