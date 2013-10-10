@@ -276,7 +276,6 @@ class CmsTextFilter  {
       $stream = self::parse_data_uri($match);
       $m = new WildfireMedia;
       $new_file = $m->upload($stream["data"], array("filename"=>time().$stream["ext"]));
-      $new_file->save();
       $text = str_replace($match, $new_file->permalink(200), $text);
     }
     return $text;
