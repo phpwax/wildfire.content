@@ -287,7 +287,7 @@ class CmsTextFilter  {
 
   static public function embedded_images($text) {
     $matches = array();
-    preg_match_all('/data:([^;]*);base64,([^\"]*)/', $text, $matches);
+    preg_match_all('/data:([^\"]*)/', $text, $matches);
     if(!count($matches)) return $text;
     foreach($matches[0] as $match) {
       $stream = self::parse_data_uri($match);
@@ -300,8 +300,8 @@ class CmsTextFilter  {
   }
 
   static public function parse_data_uri($uri) {
-    preg_match('/data:([a-zA-Z-\/]+)([a-zA-Z0-9-_;=]+)?,(.*)/', $uri, $matches);
-    if($matches[2]==";base64") $data = base64_decode($matches[3]);
+    preg_match('/data:([^;]+);([^,]+),(.*)/', $uri, $matches);
+    $data = base64_decode($matches[3]);
     $extension = str_replace("/",".",strrchr($matches[1], "/"));
     return array("mime"=>$matches[1],"data"=>$data, "ext"=>$extension);
   }
