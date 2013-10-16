@@ -1,4 +1,5 @@
 <div class='design_changer_container clearfix'>
+  <?if(count($fields["page_type"]->choices) >1):?>
   <div class="design-header clearfix">
     <div class='responsive_switcher'>
       <?$r=0;?>
@@ -17,6 +18,7 @@
   <?if($f->widget != "HiddenInput"):?></div><?endif?>
   <?endforeach?>
   </div>
+  <?endif?>
   <div class='design_preview'>
     <iframe src="<?if($model && $model->permalink):?><?=$model->permalink?>?preview=<?=$model->primval?><?endif?>" width="100%"></iframe>
   </div>
