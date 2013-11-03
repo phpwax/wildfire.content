@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
 	jQuery(window).bind("autosave.completed", function(e, res){
 		var editor = tinyMCE.activeEditor;
 		editor.setContent(res.model.row.content);
-		var caret = ed.dom.select('span#caret');
+		var caret = editor.dom.select('span#caret');
 		console.log(caret);
 
 	});
