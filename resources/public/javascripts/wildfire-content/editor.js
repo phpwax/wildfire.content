@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
 		var editor = tinyMCE.activeEditor;
 		editor.setContent(res.model.row.content);
 		editor.selection.moveToBookmark(editorPositionBookmark);
-
+    editor.execCommand('insertText', false, " ");
 	});
 
 });
