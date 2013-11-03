@@ -276,6 +276,8 @@ class CmsTextFilter  {
         if($wid = $tag->getAttribute("width")) {
           $path_parts = pathinfo($tag->getAttribute("src"));
           $tag->setAttribute("src", $path_parts["dirname"]."/".$wid.".".$path_parts["extension"]);
+          $tag->removeAttribute("width");
+          $tag->removeAttribute("height");
           $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());;
         }
       }
