@@ -6,9 +6,11 @@ jQuery(document).ready(function($) {
 	});
 
 	jQuery(window).bind("autosave.completed", function(e, res){
+		console.log(auto_save_bookmark);
 		var editor = tinyMCE.activeEditor;
 		editor.setContent(res.model.row.content);
 		editor.selection.moveToBookmark(auto_save_bookmark);
+		editor.focus();
 	});
 
 });
