@@ -1,8 +1,8 @@
-var auto_save_bookmark;
+var endId;
 jQuery(document).ready(function($) {
 
 	jQuery(window).bind("autosave.start", function(e, res){
-		var endId = tinymce.DOM.uniqueId();
+		endId = tinymce.DOM.uniqueId();
 		res.dom.add(res.getBody(), 'div', {'id': endId}, '');
 	});
 
