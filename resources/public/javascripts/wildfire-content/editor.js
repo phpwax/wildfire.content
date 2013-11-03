@@ -2,7 +2,7 @@ var auto_save_bookmark;
 jQuery(document).ready(function($) {
 
 	jQuery(window).bind("autosave.start", function(e, res){
-		auto_save_bookmark = res.selection.getBookmark();
+		auto_save_bookmark = res.selection.getBookmark(2, true);
 	});
 
 	jQuery(window).bind("autosave.completed", function(e, res){
