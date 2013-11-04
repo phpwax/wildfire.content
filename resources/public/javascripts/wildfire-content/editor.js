@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 
 	jQuery(window).bind("autosave.completed", function(e, res){
 		var editor = tinyMCE.activeEditor;
-		editor.setContent(res.model.row.content);
+		editor.setContent(res.model.row.content,{ no_events: true });
 		editor.selection.moveToBookmark(editorPositionBookmark);
 	});
 
