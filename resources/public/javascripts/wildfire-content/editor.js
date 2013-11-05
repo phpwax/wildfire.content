@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 		editor.selection.moveToBookmark(editorPositionBookmark);
 		setTimeout(function(){
 			$(editor.getDoc()).scrollTop(editorScrollTop);
-		}, 60);
+		}, 80);
 	});
 
 });
