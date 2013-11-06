@@ -294,7 +294,7 @@ class CmsTextFilter  {
     foreach($matches[0] as $match) {
       $stream = self::parse_data_uri($match);
       $m = new WildfireMedia;
-      $new_file = $m->upload($stream["data"], array("filename"=>time().rand(0,255).$stream["ext"]));
+      $new_file = $m->upload($stream["data"], array("filename"=>time().$stream["ext"]));
       $new_file->save();
       $text = str_replace($match, $new_file->permalink(200), $text);
     }
@@ -305,7 +305,6 @@ class CmsTextFilter  {
     preg_match('/data:([^;]+);([^,]+),(.*)/', $uri, $matches);
     $data = base64_decode($matches[3]);
     $extension = str_replace("/",".",strrchr($matches[1], "/"));
-    if(!$extension) $extension=".jpg";
     return array("mime"=>$matches[1],"data"=>$data, "ext"=>$extension);
   }
   
