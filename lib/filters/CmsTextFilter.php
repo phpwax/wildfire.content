@@ -305,7 +305,7 @@ class CmsTextFilter  {
     preg_match('/data:([^;]+);([^,]+),(.*)/', $uri, $matches);
     $data = base64_decode($matches[3]);
     $extension = str_replace("/",".",strrchr($matches[1], "/"));
-    if(!$extension) $extension="jpg";
+    if(!$extension) $extension=".jpg";
     return array("mime"=>$matches[1],"data"=>$data, "ext"=>$extension);
   }
   
