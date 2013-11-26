@@ -53,9 +53,11 @@
             <?
             $class = $comp['class'];
             $model = new $class($comp['scope']);
+            $l = $comp['func']['link'];
+            $t = $comp['func']['title'];
             ?>
             <?foreach($model->all() as $row):?>
-              <option value="<?=$row->redirect_link()?>"><?=$row->redirect_title()?></option>
+              <option value="<?=$row->$l()?>"><?=$row->$t()?></option>
             <?endforeach?>
           </optgroup>
           <?endforeach?>
