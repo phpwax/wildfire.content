@@ -4,6 +4,9 @@
       <li id="standard_link" class='tabs_nav_item'><a href="#standard_link_tab">Link</a></li>
       <li id="create_anchor_link" class='tabs_nav_item'><a href="#create_anchor_link_tab">Create Anchor</a></li>
       <li id="anchor_link" class='tabs_nav_item'><a href="#anchor_link_tab">Link to Anchor</a></li>
+      <?if(ApplicationController::$dynamic_link_components):?>
+      <li id="dynamic_link" class='tabs_nav_item'><a href="#dynamic_link_tab">Dynamic</a></li>
+      <?endif?>
     </ul>
     <div class='tab-contents clearfix' id='standard_link_tab'>
       <span class="field">
@@ -39,7 +42,27 @@
         </select>
       </span>
     </div>
-
+    <?if(count(ApplicationController::$dynamic_link_components)):?>
+    <div class='tab-contents clearfix' id='dynamic_link_tab'>
+      <span class='field'>
+        <label for="wf_dyn_choice">Dynamic elements</label>
+        <select name="dynamic_choices" id="wf_dyn_choice">
+          <option value='' selected="selected">----</option>
+          <?foreach(ApplicationController::$dynamic_link_components as $comp):?>
+          <optgroup label="<?=$comp['title']?>">
+            <?
+            $class = $comp['class'];
+            $model = new $class($comp['scope']);
+            ?>
+            <?foreach($model->all() as $row):?>
+              <option value="<?=$row->redirect_link()?>"><?=$row->redirect_title()?></option>
+            <?endforeach?>
+          </optgroup>
+          <?endforeach?>
+        </select>
+      </span>
+    </div>
+    <?endif?>
   </div>
 </div>
 
