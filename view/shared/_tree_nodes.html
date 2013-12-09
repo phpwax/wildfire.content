@@ -38,7 +38,7 @@
       <?foreach($node->columns as $col_name => $col_data):?>
         <?if($col_data[1]['tree_scaffold']):?>
           <?$value = ((method_exists($node, "humanize"))?$node->humanize($col_name):$node->$col_name());?>
-          <span class="tree_col tree_col_<?=$col_name?> <?=Inflections::to_url($value)?>"><?=$value?></span>
+          <span class="tree_col tree_col_<?=$col_name?> <?=Inflections::to_url($value)?>" title='<?=$value?>'><?=$value?></span>
         <?endif?>
       <?endforeach?>
       <?if(!$ignore_children && ($node->row['has_children'] > 0) ):?>
