@@ -1,10 +1,15 @@
+<?
+$link_classes = array(''=>'Normal', 'button'=>'Button');
+if(class_exists("ApplicationController", true) && ApplicationController::$dynamic_link_classes) $link_classes = ApplicationController::$dynamic_link_classes;
+?>
+
 <div id="wildfire-link-dialog" class='clearfix' data-server="http://<?=$_SERVER['HTTP_HOST']?>">
   <div class='tabs_container'>
     <ul class='tabs_nav clearfix'>
       <li id="standard_link" class='tabs_nav_item'><a href="#standard_link_tab">Link</a></li>
       <li id="create_anchor_link" class='tabs_nav_item'><a href="#create_anchor_link_tab">Create Anchor</a></li>
       <li id="anchor_link" class='tabs_nav_item'><a href="#anchor_link_tab">Link to Anchor</a></li>
-      <?if(ApplicationController::$dynamic_link_components):?>
+      <?if(class_exists("ApplicationController", true) && ApplicationController::$dynamic_link_components):?>
       <li id="dynamic_link" class='tabs_nav_item'><a href="#dynamic_link_tab">Dynamic</a></li>
       <?endif?>
     </ul>
@@ -23,8 +28,9 @@
       <span class="field">
         <label for="wf_ld_class">Class</label>
         <select name="cl_list" id="wf_ld_class">
-          <option value="">Normal</option>
-          <option value="button">Button</option>
+          <?foreach($link_classes as $class=>$text):?>
+          <option value="<?=$class?>"><?=$text?></option>
+          <?endforeach?>
         </select>
       </span>
     </div>
@@ -42,7 +48,7 @@
         </select>
       </span>
     </div>
-    <?if(count(ApplicationController::$dynamic_link_components)):?>
+    <?if(class_exists("ApplicationController", true) && count(ApplicationController::$dynamic_link_components)):?>
     <div class='tab-contents clearfix' id='dynamic_link_tab'>
       <span class='field'>
         <label for="wf_dyn_choice">Dynamic elements</label>
@@ -60,6 +66,14 @@
               <option value="<?=$row->$l()?>"><?=$row->$t()?></option>
             <?endforeach?>
           </optgroup>
+          <?endforeach?>
+        </select>
+      </span>
+      <span class="field">
+        <label for="wf_df_class">Class</label>
+        <select name="cl_list" id="wf_df_class">
+          <?foreach($link_classes as $class=>$text):?>
+          <option value="<?=$class?>"><?=$text?></option>
           <?endforeach?>
         </select>
       </span>
