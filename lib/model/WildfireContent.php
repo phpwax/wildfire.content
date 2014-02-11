@@ -30,7 +30,7 @@ class WildfireContent extends WaxTreeModel {
       $this->define("categories", "ManyToManyField", array('target_model'=>"WildfireCategory","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'group'=>'relationships', 'info_preview'=>1));
     }
     if(class_exists("WildfireUser")){
-      $this->define("author", "ManyToManyField", array('target_model'=>"WildfireUser","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'scaffold'=>true, 'group'=>'relationships', 'info_preview'=>1));
+      $this->define("author", "ManyToManyField", array('target_model'=>"WildfireUser","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'scaffold'=>true, 'info_preview'=>1, 'widget'=>'HiddenInput'));
     }
 
     //hidden extras
