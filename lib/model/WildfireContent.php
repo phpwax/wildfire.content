@@ -315,9 +315,9 @@ class WildfireContent extends WaxTreeModel {
   public function generate_permalink(){
     $class = get_class($this);
     if($this->permalink) return $this;
-    else if($this->parent_id){
+    else if($this->parent_id && ($url = $this->url())){
       $p = new $class($this->parent_id);
-      $this->permalink = $p->permalink.$this->url()."/";
+      $this->permalink = $p->permalink.$url."/";
     }else if($url = $this->url()) $this->permalink = "/".$url."/";
 
     if($this->permalink){
