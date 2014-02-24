@@ -4,7 +4,7 @@ class WildfireContent extends WaxTreeModel {
   public $identifier = "title";
   public static $view_listing_cache = array();
   public static $page_types_cache;
-
+  public $class_for_mapping = false;
 
   public function setup(){
 
@@ -129,7 +129,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_live(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $mod = new $class;
     $permalink = $this->language_permalink($this->language);
     //for each of these models permalinks look for one from an alternative model
@@ -152,7 +152,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_hide(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $permalink = $this->language_permalink($this->language);
     //look for all urls linked to this model and hide them
     if(($maps = $map->filter("destination_id", $this->primval)->filter("destination_model",$class)->all()) && $maps->count()){
@@ -166,7 +166,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_revision(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     if($id = $this->revision()){
       $maps = $map->filter("destination_id", $id)->filter("destination_model", $class)->all();
       if($maps && $maps->count()) foreach($maps as $r) $r->copy()->update_attributes(array('status'=>0, 'destination_id'=>$this->primval));
@@ -189,7 +189,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function children_move(){
     if($id = $this->revision()){
-      $class = get_class($this);
+      if(!$class = $this->class_for_mapping ) $class = get_class($this);
       $model = new $class($id);
       WaxLog::log('error', "[move] $id - $class", 'children_move');
       if($model && $model->primval){
@@ -236,7 +236,7 @@ class WildfireContent extends WaxTreeModel {
   }
 
   public function show(){
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $model = new $class;
     //find all content with this language and permalink and update their revision values & status
     foreach($model->filter("permalink", $this->permalink)->filter("language", $this->language)->all() as $r) $r->update_attributes(array('status'=>0, 'revision'=>$this->primval));
