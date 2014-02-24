@@ -4,7 +4,7 @@ class WildfireContent extends WaxTreeModel {
   public $identifier = "title";
   public static $view_listing_cache = array();
   public static $page_types_cache;
-
+  public $class_for_mapping = false;
 
   public function setup(){
 
@@ -27,7 +27,10 @@ class WildfireContent extends WaxTreeModel {
     $this->define("excerpt", "TextField", array('group'=>'extras', 'editable'=>false));
 
     if(class_exists("WildfireCategory")){
-      $this->define("categories", "ManyToManyField", array('target_model'=>"WildfireCategory","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'scaffold'=>true, 'group'=>'relationships', 'info_preview'=>1));
+      $this->define("categories", "ManyToManyField", array('target_model'=>"WildfireCategory","eager_loading"=>true, "join_model_class"=>"WaxModelOrderedJoin", "join_order"=>"join_order", 'group'=>'relationships', 'info_preview'=>1));
+    }
+    if(class_exists("WildfireUser")){
+      $this->define("author", "ForeignKey", array('target_model'=>"WildfireUser","eager_loading"=>true,'col_name'=>'author_id', 'scaffold'=>true, 'info_preview'=>1, 'widget'=>'HiddenInput'));
     }
 
     //hidden extras
@@ -126,7 +129,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_live(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $mod = new $class;
     $permalink = $this->language_permalink($this->language);
     //for each of these models permalinks look for one from an alternative model
@@ -149,7 +152,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_hide(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $permalink = $this->language_permalink($this->language);
     //look for all urls linked to this model and hide them
     if(($maps = $map->filter("destination_id", $this->primval)->filter("destination_model",$class)->all()) && $maps->count()){
@@ -163,7 +166,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function map_revision(){
     $map = new WildfireUrlMap;
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     if($id = $this->revision()){
       $maps = $map->filter("destination_id", $id)->filter("destination_model", $class)->all();
       if($maps && $maps->count()) foreach($maps as $r) $r->copy()->update_attributes(array('status'=>0, 'destination_id'=>$this->primval));
@@ -186,7 +189,7 @@ class WildfireContent extends WaxTreeModel {
    */
   public function children_move(){
     if($id = $this->revision()){
-      $class = get_class($this);
+      if(!$class = $this->class_for_mapping ) $class = get_class($this);
       $model = new $class($id);
       WaxLog::log('error', "[move] $id - $class", 'children_move');
       if($model && $model->primval){
@@ -233,7 +236,7 @@ class WildfireContent extends WaxTreeModel {
   }
 
   public function show(){
-    $class = get_class($this);
+    if(!$class = $this->class_for_mapping ) $class = get_class($this);
     $model = new $class;
     //find all content with this language and permalink and update their revision values & status
     foreach($model->filter("permalink", $this->permalink)->filter("language", $this->language)->all() as $r) $r->update_attributes(array('status'=>0, 'revision'=>$this->primval));
@@ -312,9 +315,9 @@ class WildfireContent extends WaxTreeModel {
   public function generate_permalink(){
     $class = get_class($this);
     if($this->permalink) return $this;
-    else if($this->parent_id){
+    else if($this->parent_id && ($url = $this->url())){
       $p = new $class($this->parent_id);
-      $this->permalink = $p->permalink.$this->url()."/";
+      $this->permalink = $p->permalink.$url."/";
     }else if($url = $this->url()) $this->permalink = "/".$url."/";
 
     if($this->permalink){

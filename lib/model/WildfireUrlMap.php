@@ -7,8 +7,11 @@ class WildfireUrlMap extends WaxModel{
     $this->define("content", "CharField", array('editable'=>false));
 
     $this->define("origin_url", "CharField",array('scaffold'=>true,'group'=>'content','primary_group'=>1));
+    $this->define("origin_domain", "CharField");
     //optional end points
     $this->define("destination_url", "CharField",array('scaffold'=>true,'group'=>'content','primary_group'=>1));
+    $this->define("destination_domain", "CharField");
+
     $this->define("hash", "CharField",array('editable'=>false,'scaffold'=>true));
     $this->define("track_url", "IntegerField", array('editable'=>false,'group'=>'content','primary_group'=>1));
     //or pick the model & id
@@ -45,7 +48,7 @@ class WildfireUrlMap extends WaxModel{
     return $this->update_attributes(array('title'=>$model->title,
                                     'origin_url'=>$permalink,
                                     'destination_id'=>$id,
-                                    'destination_model'=>get_class($model),
+                                    'destination_model'=>($model->class_for_mapping) ? $model->class_for_mapping : get_class($model),
                                     'status'=>$status,
                                     'date_start'=>$model->date_start,
                                     'date_end'=>$model->date_end,
