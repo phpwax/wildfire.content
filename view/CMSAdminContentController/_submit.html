@@ -1,12 +1,12 @@
 <div class='form-submit'>
   <?if($model->status == 1):?>
-    <input type="submit" name='revision' value='Save For Later' id="auto-save" class='submit_field input_field revision <?=get_class($model)?>-revision button'>
+    <input type="submit" name='revision' value='Save For Later' <?if($autosave):?>id="auto-save" <?endif?>class='submit_field input_field revision <?=get_class($model)?>-revision button'>
     <?if($current_user->allowed($controller,"publish")):?>
       <input type="submit" name='live' value='Publish to Live Site' class='submit_field input_field live <?=get_class($model)?>-live button'>
     <?endif?>
     <input type="submit" name='hide' value='Hide' class='submit_field input_field hide <?=get_class($model)?>-hide button'>
   <?else:?>
-    <input type="submit" name='hide' value='Save For Later' id="auto-save" class='submit_field input_field hide <?=get_class($model)?>-hide button'>
+    <input type="submit" name='hide' value='Save For Later' <?if($autosave):?>id="auto-save" <?endif?>class='submit_field input_field hide <?=get_class($model)?>-hide button'>
     <?if($current_user->allowed($controller,"publish")):?>
       <input type="submit" name='live' value='Put Live' class='submit_field input_field live <?=get_class($model)?>-live button'>
     <?endif?>
