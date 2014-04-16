@@ -204,7 +204,7 @@ class CMSAdminContentController extends AdminComponent {
       $this->model = new $this->model_class(Request::param('model'));
       $this->base = new $this->model_class(Request::param('base'));
       $model = new $this->model_class(Request::param('id'));
-      $this->tree = $model->children;
+      $this->tree = $model->children->enable_has_child_query()->all();
       $this->depth = Request::param('depth');
       foreach($this->base->tree() as $node) $this->model_tree[] = $node->primval;
       $this->use_format = "html";
