@@ -13,7 +13,7 @@
       $cc = new $tree_class($tree_scope);
       if($pid[0]){
         $ids = explode(",", $pid[0]);
-        $nodes = $cc->filter($pid[1], $ids)->all();
+        $nodes = $cc->filter($pid[1], $ids)->enable_has_child_query()->all();
       }
       else $nodes = $tree_model->roots();
     }else $nodes = $tree_model->roots();
@@ -69,7 +69,7 @@
     <?if($node_open && $has_kids):?>
       <?
         $children_model = new $tree_class($tree_scope);
-        $children_model->filter("parent_id", $node->id)->order($tree_model->_order, $tree_model->_order_params)->enable_has_child_query();;
+        $children_model->filter("parent_id", $node->id)->order($tree_model->_order, $tree_model->_order_params)->enable_has_child_query();
       ?>
       <li class="children-of-<?=$node->id?>">
         <?=partial("_tree_nodes", array("run_setup"=>true,"tree_model"=>$children_model, "permissions"=>$permissions, "controller"=>$controller, "action"=>$action, "row"=>$node, "cachelink"=>$cachelink, "show_headers"=>true, "ancestor_ids"=>$ancestor_ids, "model_filters"=>array("parent"=>$node->id)))?>
