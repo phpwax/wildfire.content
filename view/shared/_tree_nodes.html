@@ -12,8 +12,15 @@
       if(!$pid[1]) $pid[1] = "id";
       $cc = new $tree_class($tree_scope);
       if($pid[0]){
+        $content_ids = array();
         $ids = explode(",", $pid[0]);
-        $nodes = $cc->filter($pid[1], $ids)->enable_has_child_query()->all();
+        foreach($ids as $id){
+          if($revision_model = new $tree_class($id)){
+            if($revision_model->revision) $content_ids[] = $revision_model->revision;
+            else $content_ids[] = $id;
+          }
+        }
+        $nodes = $cc->filter($pid[1], $content_ids)->enable_has_child_query()->all();
       }
       else $nodes = $tree_model->roots();
     }else $nodes = $tree_model->roots();
